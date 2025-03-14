@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "383080390844",
+    "project_id": "pawfund-2fd28",
+    "storage_bucket": "pawfund-2fd28.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383080390844:android:4abcbe0fe17f56d8cfb0b9",
+        "android_client_info": {
+          "package_name": "com.example.capstone_pawfund_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIql1cR3KDAvBWNiFceejxOCJk31LWG3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383080390844:android:f8484f3f57f4bb5fcfb0b9",
+        "android_client_info": {
+          "package_name": "com.example.pawfund_unit_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIql1cR3KDAvBWNiFceejxOCJk31LWG3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383080390844:android:5f7509da0c9f2536cfb0b9",
+        "android_client_info": {
+          "package_name": "pawfund.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIql1cR3KDAvBWNiFceejxOCJk31LWG3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
