@@ -9,24 +9,22 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 
-class LandingPage extends StatefulWidget {
+class LandingNavBottomWidget extends StatefulWidget {
   final int? index;
-  const LandingPage({
+  const LandingNavBottomWidget({
     super.key,
     this.index,
   });
 
   @override
-  State<LandingPage> createState() => _LandingPageState();
-  static const LandingPageRoute = '/pawfund';
+  State<LandingNavBottomWidget> createState() => _LandingNavBottomWidgetState();
+  static const LandingNavBottomWidgetRoute = '/pawfund';
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingNavBottomWidgetState extends State<LandingNavBottomWidget> {
   final LandingNavigationBottomBloc landingBloc = LandingNavigationBottomBloc();
-  late String token;
 
   int bottomIndex = 0;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
@@ -46,9 +44,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     // Lấy token từ arguments
-    final arguments = Get.arguments as Map<String, dynamic>?;
-    token = arguments?.isNull ?? true ? "" : arguments?['token'];
-    // landingPageBloc.add(LandingPageInitial(bottomIndex: 0) as LandingPageEvent);
+    // LandingNavBottomWidgetBloc.add(LandingNavBottomWidgetInitial(bottomIndex: 0) as LandingNavBottomWidgetEvent);
     // print('Current Route: ${Get.currentRoute}');
     super.initState();
   }

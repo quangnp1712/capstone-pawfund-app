@@ -1,6 +1,6 @@
 import 'package:capstone_pawfund_app/core/router/router.dart';
 import 'package:capstone_pawfund_app/features/data/services/splash_service.dart';
-import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences.dart';
+import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences_helper.dart';
 import 'package:capstone_pawfund_app/features/presentation/pages/splash_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -16,9 +16,10 @@ class RouteGenerator {
         page: () => const SplashPage(),
       ),
       GetPage(
-        name: LandingPage.LandingPageRoute,
+        name: LandingNavBottomWidget.LandingNavBottomWidgetRoute,
         page: () => BlocProvider<LandingNavigationBottomBloc>.value(
-            value: landingNavigationBottomBloc, child: const LandingPage()),
+            value: landingNavigationBottomBloc,
+            child: const LandingNavBottomWidget()),
       ),
     ];
   }

@@ -1,4 +1,4 @@
-import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences.dart';
+import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences_helper.dart';
 import 'package:geolocator/geolocator.dart';
 
 abstract class ILocationService {
