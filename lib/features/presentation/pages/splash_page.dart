@@ -1,4 +1,4 @@
-import 'package:capstone_pawfund_app/features/presentation/pages/landing_navigation_bottom/landing_navigation_bottom.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

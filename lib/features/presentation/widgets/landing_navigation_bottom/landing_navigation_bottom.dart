@@ -2,8 +2,8 @@
 import 'package:capstone_pawfund_app/features/presentation/adoption_page/adoption_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/funding_page/funding_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
-import 'package:capstone_pawfund_app/features/presentation/pages/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
-import 'package:capstone_pawfund_app/features/presentation/profile_page/profile_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/menu_page/menu_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/shelter_page/shelter_page.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
@@ -33,7 +33,7 @@ class _LandingNavBottomWidgetState extends State<LandingNavBottomWidget> {
   late final ShelterPage shelterPage;
   late final AdoptionPage adoptionPage;
   late final FundingPage fundingPage;
-  late final ProfilePage profilePage;
+  late final MenuPage menuPage;
 
   void setPage(index) {
     final CurvedNavigationBarState? navBarState =
@@ -72,7 +72,7 @@ class _LandingNavBottomWidgetState extends State<LandingNavBottomWidget> {
       ShelterPage(setPage),
       AdoptionPage(setPage),
       FundingPage(setPage),
-      ProfilePage(setPage),
+      MenuPage(setPage),
     ];
     return BlocConsumer<LandingNavigationBottomBloc,
             LandingNavigationBottomInitial>(

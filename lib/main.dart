@@ -14,7 +14,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-import 'features/presentation/pages/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
+import 'features/presentation/widgets/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
