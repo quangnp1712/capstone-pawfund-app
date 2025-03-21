@@ -49,43 +49,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.deepOrangeAccent, Color(0xFFFFA726)],
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo_1.png',
-                        height: 40,
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.notifications_none,
-                      color: Colors.white,
-                      size: 30,
-                      weight: 0.1,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
+            _buildHeader(),
             const SizedBox(height: 20),
             _sectionTitle("Loại thú cưng nhận nuôi"),
             SizedBox(
@@ -132,6 +96,62 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.deepOrangeAccent, Color(0xFFFFA726)],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/logo_1.png',
+                height: 40,
+              ),
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.deepOrange, width: 2),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            child: Text(
+              "Đăng nhập",
+              style: TextStyle(
+                color: Colors.deepOrange,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.notifications_none,
+          //     color: Colors.white,
+          //     size: 30,
+          //     weight: 0.1,
+          //   ),
+          //   onPressed: () {},
+          // ),
+        ],
       ),
     );
   }
