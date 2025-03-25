@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
     // final authenticateService = AuthenticateService();
     if (!_isDisposed && mounted) {
       await Future.delayed(const Duration(milliseconds: 3000));
-      Get.toNamed(LandingNavBottomWidget.LandingNavBottomWidgetRoute);
+      Get.offAllNamed(LandingNavBottomWidget.LandingNavBottomWidgetRoute);
     } else {
       Get.offAllNamed(LandingNavBottomWidget.LandingNavBottomWidgetRoute);
     }
@@ -67,8 +67,8 @@ class _SplashPageState extends State<SplashPage> {
             SizedBox(
               height: size.height * 0.1,
             ),
-            const SpinKitSpinningLines(
-              color: Colors.black,
+            const SpinKitFadingCircle(
+              color: Colors.white,
               size: 60.0,
             )
           ]),
