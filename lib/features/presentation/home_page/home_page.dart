@@ -45,56 +45,58 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildHeader(),
-            const SizedBox(height: 20),
-            _sectionTitle("Loại thú cưng nhận nuôi"),
-            SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) => _categoryCard(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildHeader(),
+              const SizedBox(height: 20),
+              _sectionTitle("Loại thú cưng nhận nuôi"),
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) => _categoryCard(),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _sectionTitle("Nhận nuôi thú cưng"),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 280,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) => _petAdoptCard(),
+              const SizedBox(height: 20),
+              _sectionTitle("Nhận nuôi thú cưng"),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 280,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) => _petAdoptCard(),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _sosBanner(size),
-            const SizedBox(height: 20),
-            _sectionTitle("Quỹ hỗ trợ"),
-            SizedBox(
-              height: 220,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) => _supportFundCard(size),
+              const SizedBox(height: 20),
+              _sosBanner(size),
+              const SizedBox(height: 20),
+              _sectionTitle("Quỹ hỗ trợ"),
+              SizedBox(
+                height: 220,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) => _supportFundCard(size),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _sectionTitle("Trung tâm cứu trợ"),
-            SizedBox(
-              height: 220,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) => _rescueCenterCard(size),
+              const SizedBox(height: 20),
+              _sectionTitle("Trung tâm cứu trợ"),
+              SizedBox(
+                height: 220,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (context, index) => _rescueCenterCard(size),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -103,7 +105,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -132,8 +134,8 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.deepOrange, width: 2),
             ),
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            child: Text(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            child: const Text(
               "Đăng nhập",
               style: TextStyle(
                 color: Colors.deepOrange,
@@ -186,16 +188,16 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
+                    image: const DecorationImage(
                         image: AssetImage('assets/images/shield.png'),
                         fit: BoxFit.cover)),
-                child: Icon(Icons.pets, size: 40),
+                child: const Icon(Icons.pets, size: 40),
               ),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 "Mèo",
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                 ),
@@ -232,33 +234,58 @@ class _HomePageState extends State<HomePage> {
                 fontWeight: FontWeight.bold,
                 fontSize: 14),
             textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 6),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Chiều cao:",
-                  style: TextStyle(color: Colors.grey, fontSize: 12)),
-              Text("22cm",
-                  style: TextStyle(color: Colors.deepOrange, fontSize: 12)),
+              Flexible(
+                child: Text(
+                  "Chiều cao:",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Flexible(
+                child: Text(
+                  "22cm",
+                  style: TextStyle(color: Colors.deepOrange, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Tuổi:", style: TextStyle(color: Colors.grey, fontSize: 12)),
-              Text("4 tuổi",
-                  style: TextStyle(color: Colors.deepOrange, fontSize: 12)),
+              Flexible(
+                child: Text(
+                  "Tuổi:",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  "4 tuổi",
+                  style: TextStyle(color: Colors.deepOrange, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 4),
           const Text(
             "200.000 vnđ",
             style: TextStyle(
-                color: Colors.deepOrangeAccent,
-                fontWeight: FontWeight.bold,
-                fontSize: 13),
+              color: Colors.deepOrangeAccent,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
             textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 6),
           Row(
@@ -283,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.deepOrangeAccent, size: 18),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -315,26 +342,25 @@ class _HomePageState extends State<HomePage> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Row(
                 children: [
-                  const Icon(Icons.location_on_outlined,
+                  Icon(Icons.location_on_outlined,
                       color: Colors.white, size: 18),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   Text(
                     "1 Quang Trung, p.1, Q.Gò Vấp",
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ],
               ),
               Row(
                 children: [
-                  const Icon(Icons.phone_outlined,
-                      color: Colors.white, size: 18),
-                  const SizedBox(width: 4),
-                  const Text("0900 100 100",
+                  Icon(Icons.phone_outlined, color: Colors.white, size: 18),
+                  SizedBox(width: 4),
+                  Text("0900 100 100",
                       style: TextStyle(color: Colors.white, fontSize: 14)),
                 ],
               ),
@@ -370,9 +396,9 @@ class _HomePageState extends State<HomePage> {
   Widget _supportFundCard(Size size) {
     return Container(
       width: size.width * 0.4,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: Color(0xFFF36439),
+        color: const Color(0xFFF36439),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -395,8 +421,8 @@ class _HomePageState extends State<HomePage> {
               fit: BoxFit.cover,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
               "Cocoon x AAF gây quỹ cho trạm cứu trợ chó mèo",
               style: TextStyle(fontSize: 12, color: Colors.white),
@@ -408,7 +434,7 @@ class _HomePageState extends State<HomePage> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
-                foregroundColor: Color(0xFFF36439),
+                foregroundColor: const Color(0xFFF36439),
                 minimumSize: const Size(double.infinity, 35),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -450,8 +476,8 @@ class _HomePageState extends State<HomePage> {
               fit: BoxFit.cover,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
               "Cocoon x AAF gây quỹ cho trạm cứu trợ chó mèo",
               style: TextStyle(fontSize: 12, color: Colors.black),
@@ -462,7 +488,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFF36439),
+                backgroundColor: const Color(0xFFF36439),
                 foregroundColor: Colors.white,
                 minimumSize: const Size(double.infinity, 35),
                 shape: RoundedRectangleBorder(

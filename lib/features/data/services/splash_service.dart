@@ -11,7 +11,7 @@ class SplashService extends ISplashService {
     if (kDebugMode) {
       print('loading...');
     }
-    await Future.delayed(const Duration(seconds: 0));
+    await Future.delayed(const Duration(seconds: 2));
     if (kDebugMode) {
       print('welcome!');
     }
