@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/authentication_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import 'bloc/home_page_bloc.dart';
 
@@ -19,31 +22,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomePageBloc homePageBloc = HomePageBloc();
-  @override
-  // Widget build(BuildContext context) {
-  //   BlocConsumer<HomePageBloc, HomePageState>(
-  //       bloc: homePageBloc,
-  //       listenWhen: (previous, current) => current is HomePageActionState,
-  //       listener: (context, state) {
-  //         // switch (state.runtimeType) {
-  //         //   case ShowBranchOverviewPageState:
-  //         //     Get.to(() => BranchesOverviewScreen(
-  //         //           bloc: homePageBloc,
-  //         //         ));
-  //         //     break;
-  //         // }
-  //       },
-  //       builder: (context, state) {
-  //         HomePageLoadedSuccessState? successState;
-  //         if (state is HomePageLoadedSuccessState) {
-  //           successState = state;
-  //         }
-  //         return Scaffold();
-  //       });
-  // }
 
+  @override
+  void initState() {
+    homePageBloc.add(HomePageInitialEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    return BlocConsumer<HomePageBloc, HomePageState>(
+        bloc: homePageBloc,
+        listenWhen: (previous, current) => current is HomePageActionState,
+        listener: (context, state) {
+          switch (state.runtimeType) {
+            case ShowLoginPageState:
+              Get.toNamed(LoginPage.LoginPageRoute);
+              break;
+          }
+        },
+        builder: (context, state) {
+          return _buildBody(size);
+        });
+  }
+
+  Widget _buildBody(Size size) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -128,13 +132,19 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.deepOrange, width: 2),
+          ElevatedButton(
+            onPressed: () {
+              Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white, // Màu nền
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20), // Bo góc
+                side: const BorderSide(
+                    color: Colors.deepOrange, width: 2), // Viền
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
             child: const Text(
               "Đăng nhập",
               style: TextStyle(
@@ -144,6 +154,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           )
+
           // IconButton(
           //   icon: const Icon(
           //     Icons.notifications_none,

@@ -19,28 +19,30 @@ class _ProfilePageState extends State<MenuPage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 20),
-            _buildProfileInfo(size),
-            const SizedBox(height: 20),
-            _buildMenuSection("Cá nhân", [
-              _buildMenuItem(Icons.verified, "Xem và Chỉnh sửa thông tin"),
-              _buildMenuItem(Icons.email, "Đổi email"),
-              _buildMenuItem(Icons.lock, "Đổi mật khẩu"),
-              _buildMenuItem(Icons.pets, "Thú cưng đã nhận nuôi"),
-              _buildMenuItem(Icons.history, "Lịch sử quyên góp"),
-              _buildMenuItem(Icons.favorite, "Thú cưng yêu thích"),
-            ]),
-            _buildMenuSection("Hệ thống", [
-              _buildMenuItem(Icons.location_on, "Trung tâm cứu trợ gần đây"),
-              _buildMenuItem(Icons.message, "Hộp thư phản hồi"),
-              _buildMenuItem(Icons.settings, "Cài đặt & Bảo mật"),
-            ]),
-            _buildMenuItem(Icons.logout, "Đăng xuất", isLogout: true),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 20),
+              _buildProfileInfo(size),
+              const SizedBox(height: 20),
+              _buildMenuSection("Cá nhân", [
+                _buildMenuItem(Icons.verified, "Xem và Chỉnh sửa thông tin"),
+                _buildMenuItem(Icons.email, "Đổi email"),
+                _buildMenuItem(Icons.lock, "Đổi mật khẩu"),
+                _buildMenuItem(Icons.pets, "Thú cưng đã nhận nuôi"),
+                _buildMenuItem(Icons.history, "Lịch sử quyên góp"),
+                _buildMenuItem(Icons.favorite, "Thú cưng yêu thích"),
+              ]),
+              _buildMenuSection("Hệ thống", [
+                _buildMenuItem(Icons.location_on, "Trung tâm cứu trợ gần đây"),
+                _buildMenuItem(Icons.message, "Hộp thư phản hồi"),
+                _buildMenuItem(Icons.settings, "Cài đặt & Bảo mật"),
+              ]),
+              _buildMenuItem(Icons.logout, "Đăng xuất", isLogout: true),
+            ],
+          ),
         ),
       ),
     );
