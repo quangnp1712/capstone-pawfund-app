@@ -27,8 +27,6 @@ class ShowRegisterPageState extends AuthenticationState {
   ShowRegisterPageState({this.gender});
 }
 
-class RegisterLoadingState extends AuthenticationActionState {}
-
 class AuthenticationLoadingState extends AuthenticationActionState {}
 
 class RegisterSuccessState extends AuthenticationActionState {}
@@ -39,25 +37,10 @@ class AuthenticationSuccessState extends AuthenticationActionState {
   AuthenticationSuccessState({required this.token});
 }
 
-class AuthPageInvalidPhoneActionState extends AuthenticationActionState {}
-
-class AuthPageInvalidOtpActionState extends AuthenticationActionState {}
-
-class ShowLandingPageState extends AuthenticationActionState {}
-
-class LoadingState extends AuthenticationActionState {}
-
-class AuthenticationResendOTPState extends AuthenticationActionState {}
-
-class AuthenticationInputPhoneSuccessState extends AuthenticationActionState {}
-
-class CountdownInProgressState extends AuthenticationActionState {
-  final double? countdown;
-  CountdownInProgressState({
-    this.countdown,
-  });
-}
-
-class CountdownFinishedState extends AuthenticationActionState {}
-
 class VerificationAccountState extends AuthenticationActionState {}
+
+class ShowVerificationEmailState extends AuthenticationState {
+  final String email;
+
+  ShowVerificationEmailState({required this.email});
+}

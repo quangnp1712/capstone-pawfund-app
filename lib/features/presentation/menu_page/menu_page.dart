@@ -10,7 +10,7 @@ class MenuPage extends StatefulWidget {
   @override
   State<MenuPage> createState() => _ProfilePageState();
 
-  static const String ProfilePageRoute = "/menu-page";
+  static const String ProfilePageRoute = "/menu";
 }
 
 class _ProfilePageState extends State<MenuPage> {

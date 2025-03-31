@@ -1,12 +1,17 @@
 // ignore_for_file: empty_catches
 
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:bloc/bloc.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_verification_model.dart';
+import 'package:capstone_pawfund_app/features/data/models/session_model.dart';
+import 'package:capstone_pawfund_app/features/data/shared_preferences/auth_pref.dart';
 import 'package:capstone_pawfund_app/features/domain/repository/auth_repo/auth_repo.dart';
+import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -15,31 +20,34 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   SendVerificationModel? _sendVerificationModel;
   AccountModel? _accountModel;
+  String _routeFrom = "";
 
   AuthenticationBloc() : super(AuthenticationInitial()) {
     on<AuthenticationInitialEvent>(_authenticationInitialEvent);
     on<AuthenticationShowRegisterEvent>(_authenticationShowRegisterEvent);
-    on<RegisterSelectGenderEvent>(_registerSelectGenderEvent);
     on<SendVerificationAccountEvent>(_sendVerificationAccountEvent);
     on<VerificationAccountCodeEvent>(_verificationAccountCodeEvent);
     on<AuthenticationRegisterEvent>(_authenticationRegisterEvent);
+    on<AuthenticationLoginEvent>(_authenticationLoginEvent);
   }
 
   FutureOr<void> _authenticationInitialEvent(
       AuthenticationInitialEvent event, Emitter<AuthenticationState> emit) {
-    emit(ShowLoginPageState());
+    try {
+      if (event.routeTo == "LOGIN") {
+        emit(ShowLoginPageState());
+      }
+      if (event.routeFrom != "") {
+        _routeFrom = event.routeFrom;
+      }
+      emit(ShowLoginPageState());
+    } catch (e) {}
   }
 
   FutureOr<void> _authenticationShowRegisterEvent(
       AuthenticationShowRegisterEvent event,
       Emitter<AuthenticationState> emit) {
     emit(ShowRegisterPageState());
-  }
-
-  FutureOr<void> _registerSelectGenderEvent(RegisterSelectGenderEvent event,
-      Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
-    emit(ShowRegisterPageState(gender: event.gender));
   }
 
   FutureOr<void> _sendVerificationAccountEvent(
@@ -58,10 +66,7 @@ class AuthenticationBloc
         sendVerificationResponse =
             SendVerificationResponse.fromJson(responseBody);
         _sendVerificationModel = sendVerificationResponse.data;
-        emit(VerificationAccountState());
       } else {
-        emit(VerificationAccountState());
-
         emit(ShowSnackBarActionState(
             message: responseMessage, status: responseStatus));
       }
@@ -75,9 +80,7 @@ class AuthenticationBloc
     try {
       AccountVerificationCodeModel accountVerificationCodeModel =
           AccountVerificationCodeModel(
-              email: event.accountModel.email,
-              verificationCode: event.verificationCode);
-      _accountModel = event.accountModel;
+              email: event.email, verificationCode: event.verificationCode);
       var results = await AuthenticationRepository()
           .verificationAccountCode(accountVerificationCodeModel);
       var responseMessage = results['message'];
@@ -86,9 +89,15 @@ class AuthenticationBloc
       AccountVerifyResponse accountVerifyResponse;
       if (responseStatus) {
         accountVerifyResponse = AccountVerifyResponse.fromJson(responseBody);
-
-        // event dang ky
-        add(AuthenticationRegisterEvent(accountModel: event.accountModel));
+        if (event.route == "REGISTER") {
+          emit(ShowLoginPageState());
+          emit(ShowSnackBarActionState(
+              message: "Kích hoạt tài khoản thành công",
+              status: responseStatus));
+        }
+      } else if (responseBody['status'] == "404") {
+        emit(ShowSnackBarActionState(
+            message: "Mã xác thực không đúng", status: responseStatus));
       } else {
         emit(ShowSnackBarActionState(
             message: responseMessage, status: responseStatus));
@@ -108,7 +117,41 @@ class AuthenticationBloc
       if (responseStatus) {
         emit(ShowSnackBarActionState(
             message: "Đăng ký thành công", status: responseStatus));
-        emit(ShowLoginPageState());
+        add(SendVerificationAccountEvent(email: event.accountModel.email!));
+        emit(ShowVerificationEmailState(email: event.accountModel.email!));
+      } else {
+        emit(ShowSnackBarActionState(
+            message: responseMessage, status: responseStatus));
+      }
+    } catch (e) {}
+  }
+
+  FutureOr<void> _authenticationLoginEvent(
+      AuthenticationLoginEvent event, Emitter<AuthenticationState> emit) async {
+    emit(AuthenticationLoadingState());
+    try {
+      AccountModel accountLogin =
+          AccountModel(email: event.email, password: event.password);
+      var results = await AuthenticationRepository().login(accountLogin);
+      var responseMessage = results['message'];
+      var responseStatus = results['status'];
+      var responseBody = results['body'];
+      if (responseStatus) {
+        SessionResponse sessionResponse =
+            SessionResponse.fromJson(responseBody);
+        // save info acc
+        AuthPref.setToken(sessionResponse.data!.accessToken.toString());
+        AuthPref.setName(
+            "${sessionResponse.data!.account!.firstName.toString()} ${sessionResponse.data!.account!.lastName.toString()}");
+        // AuthPref.setRole(role);
+        AuthPref.setCusId(sessionResponse.data!.account!.accountId as int);
+
+        emit(ShowSnackBarActionState(
+            message: "Đăng nhập thành công", status: responseStatus));
+        if (_routeFrom == "HOME") {
+          Get.toNamed(HomePage.HomePageRoute);
+        }
+        Get.back();
       } else {
         emit(ShowSnackBarActionState(
             message: responseMessage, status: responseStatus));

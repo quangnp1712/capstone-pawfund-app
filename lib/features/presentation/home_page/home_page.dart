@@ -1,11 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'bloc/home_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/authentication_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
-import 'bloc/home_page_bloc.dart';
 
 class HomePage extends StatefulWidget {
   final Function callback;
@@ -17,7 +15,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  static const String HomePageRoute = "/home-page";
+  static const String HomePageRoute = "/home";
 }
 
 class _HomePageState extends State<HomePage> {
@@ -38,7 +36,10 @@ class _HomePageState extends State<HomePage> {
         listener: (context, state) {
           switch (state.runtimeType) {
             case ShowLoginPageState:
-              Get.toNamed(LoginPage.LoginPageRoute);
+              Get.toNamed(
+                LoginPage.LoginPageRoute,
+              );
+              // Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
               break;
           }
         },
@@ -342,15 +343,8 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/images/logo_text.png',
-            height: 40,
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'SOS: Chạm gọi - chúng tôi sẵn sàng!',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-            textAlign: TextAlign.center,
+            'assets/images/logo_2.png',
+            height: size.height * 0.1,
           ),
           const SizedBox(height: 10),
           const Row(

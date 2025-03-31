@@ -33,11 +33,11 @@ class AuthPref {
   //   Get.offAllNamed(AuthenticationPage.AuthenticationPageRoute);
   // }
 
-  static Future<void> setNameCus(String nameCus) async {
+  static Future<void> setName(String nameCus) async {
     await SharedPreferencesHelper.preferences.setString("nameCus", nameCus);
   }
 
-  static String getNameCus() {
+  static String getName() {
     return SharedPreferencesHelper.preferences.getString("nameCus") ?? "";
   }
 

@@ -86,7 +86,7 @@ class _LandingNavBottomWidgetState extends State<LandingNavBottomWidget> {
               bottomNavigationBar: CurvedNavigationBar(
                 key: _bottomNavigationKey,
                 color: Colors.white,
-                backgroundColor: Colors.black87,
+                backgroundColor: Color(0xFFF36439),
                 items: const [
                   CurvedNavigationBarItem(
                     child: Icon(Icons.home_outlined),

@@ -2,18 +2,20 @@ import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
   final AuthenticationBloc bloc;
-  bool isVerificationAccountState;
-  RegisterPage(
-      {super.key,
-      required this.bloc,
-      required this.isVerificationAccountState});
+  RegisterPage({
+    super.key,
+    required this.bloc,
+  });
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
+
+  static const String RegisterPageRoute = "/register";
 }
 
 class _RegisterPageState extends State<RegisterPage> {
@@ -32,6 +34,13 @@ class _RegisterPageState extends State<RegisterPage> {
   DateTime? dobSubmit;
   List<String> genders = ['NAM', 'NỮ'];
   String genderController = 'NAM';
+
+  @override
+  void initState() {
+    print('Current Route: ${Get.currentRoute}');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -402,7 +411,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       );
                       if (dob != null) {
                         dobSubmit = dob;
-                        dobController.text = DateFormat('dd-MM-yyyy')
+                        dobController.text = DateFormat('yyyy-MM-dd')
                             .format(dob)
                             .toString()
                             .split(" ")[0];
@@ -552,7 +561,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống mật khẩu của bạn';
+                        return 'Vui lòng nhập mật khẩu';
                       }
                       return null; // Trả về null nếu không có lỗi
                     },
@@ -605,125 +614,49 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  widget.isVerificationAccountState
-                      ? Column(
-                          children: [
-                            const Text(
-                              "Mã xác thực",
-                              style: TextStyle(
-                                  color: Color(0xFFF36439),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            TextFormField(
-                              controller: verificationCodeController,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              keyboardType: TextInputType.text,
-                              decoration: const InputDecoration(
-                                prefixIcon: Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                      start: 0, end: 12),
-                                  child: Icon(
-                                    Icons.phone,
-                                    color: Color(0xFFF36439),
-                                  ),
-                                ),
-                                hintText: "Nhập mã xác thực",
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          Colors.grey), // Viền khi chưa focus
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color(0xFFF36439),
-                                      width: 2), // Viền khi focus
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Vui lòng không để trống mã xác thực';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 10)
-                          ],
-                        )
-                      : Container(),
 
                   // Login Button
-                  widget.isVerificationAccountState
-                      ? SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              String genderCode = "MALE";
-                              if (genderController == "NAM") {
-                                genderCode = "FEMALE";
-                              }
-                              AccountModel accountModel = AccountModel(
-                                  firstName: firstNameController.text,
-                                  lastName: lastNameController.text,
-                                  identification: cccdController.text,
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                  phone: phoneController.text,
-                                  address: addressController.text,
-                                  dateOfBirth: dobController.text,
-                                  genderName: genderController,
-                                  genderCode: genderCode);
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        String genderCode = "MALE";
+                        if (genderController == "NAM") {
+                          genderCode = "FEMALE";
+                        }
+                        AccountModel accountModel = AccountModel(
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                            identification: cccdController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            phone: phoneController.text,
+                            address: addressController.text,
+                            dateOfBirth: dobController.text,
+                            genderName: genderController,
+                            genderCode: genderCode);
 
-                              widget.bloc.add(VerificationAccountCodeEvent(
-                                  accountModel: accountModel,
-                                  verificationCode:
-                                      verificationCodeController.text));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFF36439),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: const Text(
-                              "Đăng ký",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        )
-                      : SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                widget.bloc.add(SendVerificationAccountEvent(
-                                    email: emailController.text));
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFF36439),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: const Text(
-                              "Xác thực Email",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                        widget.bloc.add(AuthenticationRegisterEvent(
+                          accountModel: accountModel,
+                        ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFF36439),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
                         ),
+                      ),
+                      child: const Text(
+                        "Đăng ký",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
 
                   const SizedBox(height: 5),
 
@@ -736,7 +669,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(color: Colors.black),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          return widget.bloc
+                              .add(AuthenticationShowLoginEvent());
+                        },
                         child: const Text(
                           'Đăng nhập',
                           style: TextStyle(

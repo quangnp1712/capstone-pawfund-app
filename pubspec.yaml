@@ -72,7 +72,7 @@ dependencies:
   jwt_decoder: ^2.0.1
 
   # chuyển trang
-  get: ^4.6.6
+  get: ^4.7.2
 
   # thanh tiến rình
   percent_indicator: ^4.2.3

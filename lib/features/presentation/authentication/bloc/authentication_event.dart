@@ -5,17 +5,16 @@ sealed class AuthenticationEvent {
   const AuthenticationEvent();
 }
 
-class AuthenticationInitialEvent extends AuthenticationEvent {}
+class AuthenticationInitialEvent extends AuthenticationEvent {
+  final String routeTo;
+  final String routeFrom;
+
+  AuthenticationInitialEvent({required this.routeTo, required this.routeFrom});
+}
 
 class AuthenticationShowLoginEvent extends AuthenticationEvent {}
 
 class AuthenticationShowRegisterEvent extends AuthenticationEvent {}
-
-class RegisterSelectGenderEvent extends AuthenticationEvent {
-  final String gender;
-
-  const RegisterSelectGenderEvent({required this.gender});
-}
 
 class SendVerificationAccountEvent extends AuthenticationEvent {
   final String email;
@@ -24,11 +23,14 @@ class SendVerificationAccountEvent extends AuthenticationEvent {
 }
 
 class VerificationAccountCodeEvent extends AuthenticationEvent {
-  final AccountModel accountModel;
+  final String email;
   final String verificationCode;
+  final String route;
 
   VerificationAccountCodeEvent(
-      {required this.accountModel, required this.verificationCode});
+      {required this.email,
+      required this.verificationCode,
+      required this.route});
 }
 
 class AuthenticationRegisterEvent extends AuthenticationEvent {
@@ -36,4 +38,19 @@ class AuthenticationRegisterEvent extends AuthenticationEvent {
   AuthenticationRegisterEvent({
     required this.accountModel,
   });
+}
+
+class AuthenticationLoginEvent extends AuthenticationEvent {
+  final String email;
+  final String password;
+  AuthenticationLoginEvent({
+    required this.email,
+    required this.password,
+  });
+}
+
+class ShowVerificationEmail extends AuthenticationEvent {
+  final String email;
+
+  ShowVerificationEmail({required this.email});
 }

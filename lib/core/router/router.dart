@@ -1,5 +1,8 @@
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/authentication_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/register_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/verifiction_email_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
@@ -30,7 +33,7 @@ class RouteGenerator {
       GetPage(
         name: AuthenticationPage.AuthenticationPageRoute,
         page: () => BlocProvider<AuthenticationBloc>.value(
-            value: authenticationBloc, child: const AuthenticationPage()),
+            value: authenticationBloc, child: AuthenticationPage()),
       ),
       GetPage(
         name: HomePage.HomePageRoute,
@@ -39,6 +42,27 @@ class RouteGenerator {
           return BlocProvider<HomePageBloc>.value(
               value: homePageBloc, child: HomePage(callback));
         },
+      ),
+      GetPage(
+        name: LoginPage.LoginPageRoute,
+        page: () => BlocProvider<AuthenticationBloc>.value(
+          value: authenticationBloc,
+          child: LoginPage(
+            bloc: authenticationBloc,
+          ),
+        ),
+      ),
+      GetPage(
+        name: RegisterPage.RegisterPageRoute,
+        page: () => BlocProvider<AuthenticationBloc>.value(
+            value: authenticationBloc,
+            child: RegisterPage(bloc: authenticationBloc)),
+      ),
+      GetPage(
+        name: VerifictionEmailPage.VerifictionEmailPageRoute,
+        page: () => BlocProvider<AuthenticationBloc>.value(
+            value: authenticationBloc,
+            child: VerifictionEmailPage(bloc: authenticationBloc, email: "")),
       ),
     ];
   }

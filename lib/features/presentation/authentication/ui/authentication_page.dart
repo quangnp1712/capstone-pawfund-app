@@ -1,19 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: unused_field
 
-import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
-import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
-import 'package:capstone_pawfund_app/features/presentation/authentication/ui/register_page.dart';
-import 'package:capstone_pawfund_app/features/presentation/widgets/dialog/loading_dialog.dart';
-import 'package:capstone_pawfund_app/features/presentation/widgets/snackbar/snackbar.dart';
+import 'package:capstone_pawfund_app/core/utils/debug_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-class AuthenticationPage extends StatefulWidget {
-  const AuthenticationPage({super.key});
+import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/register_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/authentication/ui/verifiction_email_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/dialog/loading_dialog.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/snackbar/snackbar.dart';
 
-  static const String AuthenticationPageRoute = "/auth-screen";
+class AuthenticationPage extends StatefulWidget {
+  String? route;
+  AuthenticationPage({
+    Key? key,
+    this.route,
+  }) : super(key: key);
+
+  static const String AuthenticationPageRoute = "/auth";
 
   @override
   State<AuthenticationPage> createState() => _AuthenticationPageState();
@@ -21,13 +29,21 @@ class AuthenticationPage extends StatefulWidget {
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
   final AuthenticationBloc authPageBloc = AuthenticationBloc();
+  String routeTo = "";
+  String routeFrom = "";
   CloseDialog? _closeDialogHandle;
   ShowDialog? _showDialogHandle;
 
   @override
   void initState() {
-    authPageBloc.add(AuthenticationInitialEvent());
-    print('Current Route: ${Get.currentRoute}');
+    if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
+      routeTo = Get.arguments['routeTo'] ?? "";
+      routeFrom = Get.arguments['routeFrom'] ?? "";
+    }
+    authPageBloc.add(
+        AuthenticationInitialEvent(routeTo: routeTo, routeFrom: routeFrom));
+    DebugLogger.printLog('Current Route: ${Get.currentRoute}');
+    DebugLogger.printLog('Route History: ${Get.routing.previous}');
 
     super.initState();
   }
@@ -40,14 +56,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       buildWhen: (previous, current) => current is! AuthenticationActionState,
       listener: (context, state) {
         switch (state.runtimeType) {
-          case AuthPageInvalidPhoneActionState:
-            ShowSnackBar.ErrorSnackBar(context, "Số điện thoại không đúng");
-            break;
-
-          case AuthPageInvalidOtpActionState:
-            ShowSnackBar.ErrorSnackBar(context, "Mã xác thực không đúng");
-            break;
-
           case ShowSnackBarActionState:
             final snackBarState = state as ShowSnackBarActionState;
             if (snackBarState.status == true) {
@@ -56,6 +64,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ShowSnackBar.ErrorSnackBar(context, snackBarState.message);
             }
             break;
+
+          // case ShowLoginPageState:
+          //   // return LoginPage(
+          //   //   bloc: authPageBloc,
+          //   // );
+          //   Get.toNamed(LoginPage.LoginPageRoute);
+          //   break;
 
           // case AuthenticationSuccessState:
           //   final successState = state as AuthenticationSuccessState;
@@ -71,19 +86,21 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       },
       builder: (context, state) {
         switch (state.runtimeType) {
-          // case ShowCreateOtpPageState:
-          //   final currentState = state as ShowCreateOtpPageState;
-          //   return CreateOtpPage(bloc: authPageBloc, phone: currentState.phone);
           case ShowLoginPageState:
-            return LoginPage(bloc: authPageBloc);
+            return LoginPage(
+              bloc: authPageBloc,
+            );
           case ShowRegisterPageState:
-            bool isVerificationAccountState = false;
-            if (state is VerificationAccountState) {
-              isVerificationAccountState = true;
-            }
             return RegisterPage(
-                bloc: authPageBloc,
-                isVerificationAccountState: isVerificationAccountState);
+              bloc: authPageBloc,
+            );
+          case ShowVerificationEmailState:
+            ShowVerificationEmailState currentState =
+                state as ShowVerificationEmailState;
+            return VerifictionEmailPage(
+              email: currentState.email,
+              bloc: authPageBloc,
+            );
         }
         return const SizedBox();
       },

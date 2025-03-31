@@ -12,7 +12,7 @@ abstract class IAuthenticationRepository {
   Future<Map<String, dynamic>> verificationAccountCode(
       AccountVerificationCodeModel accountVerificationCodeModel);
 
-  Future<Map<String, dynamic>> login(String phone, String otp);
+  Future<Map<String, dynamic>> login(AccountModel accountLogin);
 
   Future<Map<String, dynamic>> register(AccountModel accountModel);
 }
@@ -20,8 +20,25 @@ abstract class IAuthenticationRepository {
 class AuthenticationRepository extends ApiEndpoints
     implements IAuthenticationRepository {
   @override
-  Future<Map<String, dynamic>> login(String phone, String otp) {
-    throw UnimplementedError();
+  Future<Map<String, dynamic>> login(AccountModel accountLogin) async {
+    try {
+      Uri uri = Uri.parse("$SessionLoginUrl");
+      final client = http.Client();
+      final response = await client
+          .post(
+            uri,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+            },
+            body: accountLogin.toJson(),
+          )
+          .timeout(const Duration(seconds: 180));
+      return processResponse(response);
+    } catch (e) {
+      return ExceptionHandlers().getExceptionString(e);
+    }
   }
 
   @override
