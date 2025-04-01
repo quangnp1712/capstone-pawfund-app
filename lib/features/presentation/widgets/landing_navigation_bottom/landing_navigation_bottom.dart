@@ -80,40 +80,44 @@ class _LandingNavBottomWidgetState extends State<LandingNavBottomWidget> {
         listener: (context, state) {},
         builder: (context, state) {
           return SafeArea(
-            child: Scaffold(
-              // key: _bottomNavigationKey,
-              body: pages[state.bottomIndex],
-              bottomNavigationBar: CurvedNavigationBar(
-                key: _bottomNavigationKey,
-                color: Colors.white,
-                backgroundColor: Color(0xFFF36439),
-                items: const [
-                  CurvedNavigationBarItem(
-                    child: Icon(Icons.home_outlined),
-                    label: 'Trang chủ',
-                  ),
-                  CurvedNavigationBarItem(
-                    child: Icon(Icons.list_alt),
-                    label: 'Nhận nuôi',
-                  ),
-                  CurvedNavigationBarItem(
-                    child: Icon(Icons.calendar_month),
-                    label: 'Trung tâm',
-                  ),
-                  CurvedNavigationBarItem(
-                    // child: Icon(Icons.newspaper),
-                    child: Icon(CommunityMaterialIcons.ticket_percent_outline),
-                    label: 'Ủng hộ',
-                  ),
-                  CurvedNavigationBarItem(
-                    child: Icon(Icons.perm_identity),
-                    label: 'Tài khoản',
-                  ),
-                ],
-                onTap: (index) {
-                  landingBloc.add(LandingNavigationBottomTabChangeEvent(
-                      bottomIndex: index));
-                },
+            child: PopScope(
+              canPop: false,
+              child: Scaffold(
+                // key: _bottomNavigationKey,
+                body: pages[state.bottomIndex],
+                bottomNavigationBar: CurvedNavigationBar(
+                  key: _bottomNavigationKey,
+                  color: Colors.white,
+                  backgroundColor: Color(0xFFF36439),
+                  items: const [
+                    CurvedNavigationBarItem(
+                      child: Icon(Icons.home_outlined),
+                      label: 'Trang chủ',
+                    ),
+                    CurvedNavigationBarItem(
+                      child: Icon(Icons.list_alt),
+                      label: 'Nhận nuôi',
+                    ),
+                    CurvedNavigationBarItem(
+                      child: Icon(Icons.calendar_month),
+                      label: 'Trung tâm',
+                    ),
+                    CurvedNavigationBarItem(
+                      // child: Icon(Icons.newspaper),
+                      child:
+                          Icon(CommunityMaterialIcons.ticket_percent_outline),
+                      label: 'Ủng hộ',
+                    ),
+                    CurvedNavigationBarItem(
+                      child: Icon(Icons.perm_identity),
+                      label: 'Tài khoản',
+                    ),
+                  ],
+                  onTap: (index) {
+                    landingBloc.add(LandingNavigationBottomTabChangeEvent(
+                        bottomIndex: index));
+                  },
+                ),
               ),
             ),
           );

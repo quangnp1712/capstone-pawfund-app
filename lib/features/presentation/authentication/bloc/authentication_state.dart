@@ -16,9 +16,9 @@ class ShowLoadingActionState extends AuthenticationActionState {}
 
 class ShowSnackBarActionState extends AuthenticationActionState {
   final String message;
-  final bool status;
+  final bool success;
 
-  ShowSnackBarActionState({required this.status, required this.message});
+  ShowSnackBarActionState({required this.success, required this.message});
 }
 
 class ShowRegisterPageState extends AuthenticationState {

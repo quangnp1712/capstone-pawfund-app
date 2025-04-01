@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:capstone_pawfund_app/core/utils/utf8_encoding.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,6 +11,11 @@ class ShowSnackBar {
   final String? message;
 
   static SuccessSnackBar(BuildContext context, String message) {
+    try {
+      message = Utf8Encoding().decode(message);
+    } catch (e) {
+      message = message.toString();
+    }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       width: 85.w,
       padding: const EdgeInsets.all(0),
@@ -53,6 +59,11 @@ class ShowSnackBar {
   }
 
   static ErrorSnackBar(BuildContext context, String message) {
+    try {
+      message = Utf8Encoding().decode(message);
+    } catch (e) {
+      message = message.toString();
+    }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       width: 85.w,
       padding: const EdgeInsets.all(0),
@@ -81,7 +92,7 @@ class ShowSnackBar {
             SizedBox(
               width: 72.w,
               child: Text(
-                utf8.decode(message.toString().runes.toList()),
+                message.toString(),
                 maxLines: 2,
                 style: const TextStyle(
                   overflow: TextOverflow.ellipsis,

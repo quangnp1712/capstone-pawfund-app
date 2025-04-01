@@ -1,4 +1,5 @@
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -68,19 +69,24 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
         padding: const EdgeInsets.only(left: 0),
         child: Stack(
           children: [
-            SizedBox(
-              height: 50,
-              child: IconButton(
-                alignment: Alignment.centerLeft,
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {},
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: 50,
+                child: IconButton(
+                  alignment: Alignment.center,
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
               ),
             ),
             const SizedBox(
               height: 50,
               child: Center(
                   child: Text(
-                "ĐĂNG NHẬP",
+                "XÁC THỰC EMAIL",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -88,6 +94,21 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                   fontWeight: FontWeight.bold,
                 ),
               )),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                height: 50,
+                child: IconButton(
+                  alignment: Alignment.center,
+                  icon: const Icon(Icons.home, color: Colors.white),
+                  onPressed: () {
+                    Get.to(const LandingNavBottomWidget(
+                      index: 0,
+                    ));
+                  },
+                ),
+              ),
             ),
           ],
         ),
@@ -192,8 +213,10 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                     TextFormField(
                       obscureText: true,
                       controller: verificationCodeController,
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       inputFormatters: [
+                        LengthLimitingTextInputFormatter(6),
+
                         FilteringTextInputFormatter
                             .singleLineFormatter, // Đảm bảo chỉ nhập trên một dòng
                       ],
@@ -220,6 +243,8 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Vui lòng không để trống mã xác thực';
+                        } else if (!RegExp(r'^\d{6}$').hasMatch(value)) {
+                          return 'Mã xác thực phải gồm 6 chữ số';
                         }
                         return null;
                       },
@@ -232,11 +257,13 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          widget.bloc.add(VerificationAccountCodeEvent(
-                              route: "REGISTER",
-                              email: emailController.text,
-                              verificationCode:
-                                  verificationCodeController.text));
+                          if (_formKey.currentState!.validate()) {
+                            widget.bloc.add(VerificationAccountCodeEvent(
+                                route: "REGISTER",
+                                email: emailController.text,
+                                verificationCode:
+                                    verificationCodeController.text));
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFF36439),
@@ -245,7 +272,7 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                           ),
                         ),
                         child: const Text(
-                          "Đăng nhập",
+                          "Xác thực",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -262,7 +289,7 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                       child: TextButton(
                         onPressed: () {},
                         child: const Text(
-                          'Quên mật khẩu',
+                          'Gửi lại mã xác thực Email',
                           style: TextStyle(
                             color: Color(0xFFF36439),
                             decoration: TextDecoration.underline,

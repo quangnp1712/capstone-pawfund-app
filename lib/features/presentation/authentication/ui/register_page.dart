@@ -1,5 +1,7 @@
 import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -82,14 +84,17 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: const EdgeInsets.only(left: 0),
         child: Stack(
           children: [
-            SizedBox(
-              height: 50,
-              child: IconButton(
-                alignment: Alignment.centerLeft,
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  // Xử lý khi bấm vào biểu tượng thông báo
-                },
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: 50,
+                child: IconButton(
+                  alignment: Alignment.center,
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    widget.bloc.add(AuthenticationShowLoginEvent());
+                  },
+                ),
               ),
             ),
             const SizedBox(
@@ -104,6 +109,21 @@ class _RegisterPageState extends State<RegisterPage> {
                   fontWeight: FontWeight.bold,
                 ),
               )),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                height: 50,
+                child: IconButton(
+                  alignment: Alignment.center,
+                  icon: const Icon(Icons.home, color: Colors.white),
+                  onPressed: () {
+                    Get.to(const LandingNavBottomWidget(
+                      index: 0,
+                    ));
+                  },
+                ),
+              ),
             ),
           ],
         ),
@@ -328,6 +348,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Vui lòng không để trống số điện thoại của bạn';
+                      } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                        return 'Số điện thoại phải gồm 10 chữ số';
                       }
                       return null;
                     },
@@ -403,11 +425,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     onTap:
                         //_selectDate, EVENT
                         () async {
+                      DateTime now = DateTime.now();
+                      DateTime minSelectableDate = DateTime(now.year - 100);
+                      DateTime maxSelectableDate = DateTime(now.year - 14);
                       DateTime? dob = await showDatePicker(
                         context: context,
-                        initialDate: DateTime(2000),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
+                        initialDate: maxSelectableDate,
+                        firstDate: minSelectableDate,
+                        lastDate: maxSelectableDate,
                       );
                       if (dob != null) {
                         dobSubmit = dob;
@@ -621,25 +646,27 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        String genderCode = "MALE";
-                        if (genderController == "NAM") {
-                          genderCode = "FEMALE";
-                        }
-                        AccountModel accountModel = AccountModel(
-                            firstName: firstNameController.text,
-                            lastName: lastNameController.text,
-                            identification: cccdController.text,
-                            email: emailController.text,
-                            password: passwordController.text,
-                            phone: phoneController.text,
-                            address: addressController.text,
-                            dateOfBirth: dobController.text,
-                            genderName: genderController,
-                            genderCode: genderCode);
+                        if (_formKey.currentState!.validate()) {
+                          String genderCode = "MALE";
+                          if (genderController == "NAM") {
+                            genderCode = "FEMALE";
+                          }
+                          AccountModel accountModel = AccountModel(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              identification: cccdController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                              phone: phoneController.text,
+                              address: addressController.text,
+                              dateOfBirth: dobController.text,
+                              genderName: genderController,
+                              genderCode: genderCode);
 
-                        widget.bloc.add(AuthenticationRegisterEvent(
-                          accountModel: accountModel,
-                        ));
+                          widget.bloc.add(AuthenticationRegisterEvent(
+                            accountModel: accountModel,
+                          ));
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFF36439),

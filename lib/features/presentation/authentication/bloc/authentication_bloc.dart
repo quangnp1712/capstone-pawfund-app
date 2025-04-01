@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:bloc/bloc.dart';
+import 'package:capstone_pawfund_app/core/utils/debug_logger.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_verification_model.dart';
 import 'package:capstone_pawfund_app/features/data/models/session_model.dart';
@@ -25,6 +26,7 @@ class AuthenticationBloc
   AuthenticationBloc() : super(AuthenticationInitial()) {
     on<AuthenticationInitialEvent>(_authenticationInitialEvent);
     on<AuthenticationShowRegisterEvent>(_authenticationShowRegisterEvent);
+    on<AuthenticationShowLoginEvent>(_authenticationShowLoginEvent);
     on<SendVerificationAccountEvent>(_sendVerificationAccountEvent);
     on<VerificationAccountCodeEvent>(_verificationAccountCodeEvent);
     on<AuthenticationRegisterEvent>(_authenticationRegisterEvent);
@@ -50,6 +52,11 @@ class AuthenticationBloc
     emit(ShowRegisterPageState());
   }
 
+  FutureOr<void> _authenticationShowLoginEvent(
+      AuthenticationShowLoginEvent event, Emitter<AuthenticationState> emit) {
+    emit(ShowLoginPageState());
+  }
+
   FutureOr<void> _sendVerificationAccountEvent(
       SendVerificationAccountEvent event,
       Emitter<AuthenticationState> emit) async {
@@ -59,16 +66,17 @@ class AuthenticationBloc
           await AuthenticationRepository().verificationAccount(event.email);
       var responseMessage = results['message'];
       var responseStatus = results['status'];
+      var responseSuccess = results['success'];
       var responseBody = results['body'];
       SendVerificationResponse sendVerificationResponse;
 
-      if (responseStatus) {
+      if (responseSuccess) {
         sendVerificationResponse =
             SendVerificationResponse.fromJson(responseBody);
         _sendVerificationModel = sendVerificationResponse.data;
       } else {
         emit(ShowSnackBarActionState(
-            message: responseMessage, status: responseStatus));
+            message: responseMessage, success: responseSuccess));
       }
     } catch (e) {}
   }
@@ -85,24 +93,28 @@ class AuthenticationBloc
           .verificationAccountCode(accountVerificationCodeModel);
       var responseMessage = results['message'];
       var responseStatus = results['status'];
+      var responseSuccess = results['success'];
       var responseBody = results['body'];
       AccountVerifyResponse accountVerifyResponse;
-      if (responseStatus) {
+
+      if (responseSuccess) {
         accountVerifyResponse = AccountVerifyResponse.fromJson(responseBody);
         if (event.route == "REGISTER") {
           emit(ShowLoginPageState());
           emit(ShowSnackBarActionState(
               message: "Kích hoạt tài khoản thành công",
-              status: responseStatus));
+              success: responseSuccess));
         }
-      } else if (responseBody['status'] == "404") {
+      } else if (responseStatus != null && responseStatus == 404) {
         emit(ShowSnackBarActionState(
-            message: "Mã xác thực không đúng", status: responseStatus));
+            message: "Mã xác thực không đúng", success: responseSuccess));
       } else {
         emit(ShowSnackBarActionState(
-            message: responseMessage, status: responseStatus));
+            message: responseMessage, success: responseSuccess));
       }
-    } catch (e) {}
+    } catch (e) {
+      DebugLogger.printLog(e.toString());
+    }
   }
 
   FutureOr<void> _authenticationRegisterEvent(AuthenticationRegisterEvent event,
@@ -113,15 +125,17 @@ class AuthenticationBloc
           await AuthenticationRepository().register(event.accountModel);
       var responseMessage = results['message'];
       var responseStatus = results['status'];
+      var responseSuccess = results['success'];
       var responseBody = results['body'];
-      if (responseStatus) {
+
+      if (responseSuccess) {
         emit(ShowSnackBarActionState(
-            message: "Đăng ký thành công", status: responseStatus));
+            message: "Đăng ký thành công", success: responseSuccess));
         add(SendVerificationAccountEvent(email: event.accountModel.email!));
         emit(ShowVerificationEmailState(email: event.accountModel.email!));
       } else {
         emit(ShowSnackBarActionState(
-            message: responseMessage, status: responseStatus));
+            message: responseMessage, success: responseSuccess));
       }
     } catch (e) {}
   }
@@ -135,8 +149,9 @@ class AuthenticationBloc
       var results = await AuthenticationRepository().login(accountLogin);
       var responseMessage = results['message'];
       var responseStatus = results['status'];
+      var responseSuccess = results['success'];
       var responseBody = results['body'];
-      if (responseStatus) {
+      if (responseSuccess) {
         SessionResponse sessionResponse =
             SessionResponse.fromJson(responseBody);
         // save info acc
@@ -147,14 +162,14 @@ class AuthenticationBloc
         AuthPref.setCusId(sessionResponse.data!.account!.accountId as int);
 
         emit(ShowSnackBarActionState(
-            message: "Đăng nhập thành công", status: responseStatus));
+            message: "Đăng nhập thành công", success: responseSuccess));
         if (_routeFrom == "HOME") {
           Get.toNamed(HomePage.HomePageRoute);
         }
         Get.back();
       } else {
         emit(ShowSnackBarActionState(
-            message: responseMessage, status: responseStatus));
+            message: responseMessage, success: responseSuccess));
       }
     } catch (e) {}
   }

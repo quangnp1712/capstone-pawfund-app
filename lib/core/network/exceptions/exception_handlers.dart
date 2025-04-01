@@ -6,23 +6,61 @@ import 'package:capstone_pawfund_app/core/network/exceptions/app_exceptions.dart
 class ExceptionHandlers {
   getExceptionString(error) {
     if (error is SocketException) {
-      return {"status": false, "message": 'No internet connection.'};
+      return {
+        "success": false,
+        "message": 'No internet connection.',
+      };
     } else if (error is HttpException) {
-      return {"status": false, "message": 'HTTP error occured.'};
+      return {
+        "success": false,
+        "message": 'HTTP error occured.',
+      };
     } else if (error is FormatException) {
-      return {"status": false, "message": 'Invalid data format'};
+      return {
+        "success": false,
+        "message": 'Invalid data format',
+      };
     } else if (error is TimeoutException) {
-      return {"status": false, "message": 'Request timedout.'};
+      return {
+        "success": false,
+        "message": 'Request timedout.',
+      };
     } else if (error is BadRequestException) {
-      return {"status": false, "message": error.message.toString()};
+      return {
+        "success": false,
+        "status": error.status,
+        "message": error.message.toString()
+      };
     } else if (error is UnAuthorizedException) {
-      return {"status": false, "message": error.message.toString()};
+      return {
+        "success": false,
+        "status": error.status,
+        "message": error.message.toString()
+      };
     } else if (error is NotFoundException) {
-      return {"status": false, "message": error.message.toString()};
+      return {
+        "success": false,
+        "status": error.status,
+        "message": error.message.toString()
+      };
     } else if (error is FetchDataException) {
-      return {"status": false, "message": error.message.toString()};
+      return {
+        "success": false,
+        "status": error.status,
+        "message": error.message.toString()
+      };
+    } else if (error is TypeErrorException) {
+      return {
+        "success": false,
+        "status": error.status,
+        "message": error.runtimeType.toString()
+      };
     } else {
-      return {"status": false, "message": error.message.toString()};
+      return {
+        "success": false,
+        "status": error.status,
+        "message": error.message.toString()
+      };
     }
   }
 }

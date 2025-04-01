@@ -58,7 +58,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         switch (state.runtimeType) {
           case ShowSnackBarActionState:
             final snackBarState = state as ShowSnackBarActionState;
-            if (snackBarState.status == true) {
+            if (snackBarState.success == true) {
               ShowSnackBar.SuccessSnackBar(context, snackBarState.message);
             } else {
               ShowSnackBar.ErrorSnackBar(context, snackBarState.message);

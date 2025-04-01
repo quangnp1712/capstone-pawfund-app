@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         if (!didPop) {
-          Get.back();
+          widget.bloc.add(AuthenticationShowLoginEvent());
         }
       },
       child: Scaffold(
@@ -287,10 +287,12 @@ class _LoginPageState extends State<LoginPage> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        widget.bloc.add(AuthenticationLoginEvent(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        ));
+                        if (_formKey.currentState!.validate()) {
+                          widget.bloc.add(AuthenticationLoginEvent(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          ));
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFF36439),
