@@ -15,6 +15,8 @@ class ApiEndpoints {
   final String AccountVerificationCodeUrl =
       "$domainUrl/v1/public/account/verify";
 
+  final String AccountSelfDetailUrl = "$domainUrl/v1/api/account/self-detail";
+
   //! Session API !//
   // Login
   final String SessionLoginUrl = "$domainUrl/v1/public/session/login";

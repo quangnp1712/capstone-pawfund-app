@@ -76,7 +76,7 @@ class AccountModel {
           map['genderName'] != null ? map['genderName'] as String : null,
       roles: map['roles'] != null
           ? List<RoleModel>.from(
-              (map['roles'] as List<int>).map<RoleModel?>(
+              (map['roles'] as List).map(
                 (x) => RoleModel.fromMap(x as Map<String, dynamic>),
               ),
             )
@@ -87,7 +87,7 @@ class AccountModel {
           map['statusName'] != null ? map['statusName'] as String : null,
       medias: map['medias'] != null
           ? List<MediaModel>.from(
-              (map['medias'] as List<int>).map<MediaModel?>(
+              (map['medias'] as List).map(
                 (x) => MediaModel.fromMap(x as Map<String, dynamic>),
               ),
             )
@@ -101,9 +101,9 @@ class AccountModel {
       AccountModel.fromMap(source);
 }
 
-class AccountVerifyResponse extends BaseResponse {
+class AccountResponse extends BaseResponse {
   AccountModel? data;
-  AccountVerifyResponse({
+  AccountResponse({
     this.data,
     status,
     success,
@@ -118,8 +118,8 @@ class AccountVerifyResponse extends BaseResponse {
           apiVersion: apiVersion,
         );
 
-  factory AccountVerifyResponse.fromMap(Map<String, dynamic> map) {
-    return AccountVerifyResponse(
+  factory AccountResponse.fromMap(Map<String, dynamic> map) {
+    return AccountResponse(
       data: map['data'] != null
           ? AccountModel.fromMap(map['data'] as Map<String, dynamic>)
           : null,
@@ -132,6 +132,6 @@ class AccountVerifyResponse extends BaseResponse {
     );
   }
 
-  factory AccountVerifyResponse.fromJson(Map<String, dynamic> source) =>
-      AccountVerifyResponse.fromMap(source);
+  factory AccountResponse.fromJson(Map<String, dynamic> source) =>
+      AccountResponse.fromMap(source);
 }

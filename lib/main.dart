@@ -3,7 +3,9 @@ import 'package:capstone_pawfund_app/features/data/services/splash_service.dart'
 import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences_helper.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/pages/splash_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/profile_page/bloc/profile_page_bloc.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -70,6 +72,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => LandingNavigationBottomBloc()),
           BlocProvider(create: (_) => AuthenticationBloc()),
           BlocProvider(create: (_) => HomePageBloc()),
+          BlocProvider(create: (_) => MenuPageBloc()),
+          BlocProvider(create: (_) => ProfilePageBloc()),
         ],
         child: GetMaterialApp(
           localizationsDelegates: const [

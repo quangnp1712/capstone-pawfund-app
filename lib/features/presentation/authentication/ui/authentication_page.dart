@@ -36,10 +36,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   @override
   void initState() {
-    if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
-      routeTo = Get.arguments['routeTo'] ?? "";
-      routeFrom = Get.arguments['routeFrom'] ?? "";
-    }
     authPageBloc.add(
         AuthenticationInitialEvent(routeTo: routeTo, routeFrom: routeFrom));
     DebugLogger.printLog('Current Route: ${Get.currentRoute}');

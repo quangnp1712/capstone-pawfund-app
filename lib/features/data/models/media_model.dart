@@ -2,10 +2,14 @@ import 'dart:convert';
 
 class MediaModel {
   String? url;
+  String? mediaTypeCode;
+  String? mediaTypeName;
   bool? isThumbnail;
   MediaModel({
     this.url,
     this.isThumbnail,
+    this.mediaTypeCode,
+    this.mediaTypeName,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,6 +22,10 @@ class MediaModel {
   factory MediaModel.fromMap(Map<String, dynamic> map) {
     return MediaModel(
       url: map['url'] != null ? map['url'] as String : null,
+      mediaTypeCode:
+          map['mediaTypeCode'] != null ? map['mediaTypeCode'] as String : null,
+      mediaTypeName:
+          map['mediaTypeName'] != null ? map['mediaTypeName'] as String : null,
       isThumbnail:
           map['isThumbnail'] != null ? map['isThumbnail'] as bool : null,
     );

@@ -12,8 +12,6 @@ abstract class AuthenticationActionState extends AuthenticationState {}
 
 class ShowLoginPageState extends AuthenticationState {}
 
-class ShowLoadingActionState extends AuthenticationActionState {}
-
 class ShowSnackBarActionState extends AuthenticationActionState {
   final String message;
   final bool success;

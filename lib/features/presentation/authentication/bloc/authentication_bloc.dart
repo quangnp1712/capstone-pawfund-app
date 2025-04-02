@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:bloc/bloc.dart';
+import 'package:capstone_pawfund_app/core/utils/check_asset_image.dart';
 import 'package:capstone_pawfund_app/core/utils/debug_logger.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_verification_model.dart';
@@ -12,6 +13,7 @@ import 'package:capstone_pawfund_app/features/data/shared_preferences/auth_pref.
 import 'package:capstone_pawfund_app/features/domain/repository/auth_repo/auth_repo.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
 part 'authentication_event.dart';
@@ -95,10 +97,10 @@ class AuthenticationBloc
       var responseStatus = results['status'];
       var responseSuccess = results['success'];
       var responseBody = results['body'];
-      AccountVerifyResponse accountVerifyResponse;
+      AccountResponse accountVerifyResponse;
 
       if (responseSuccess) {
-        accountVerifyResponse = AccountVerifyResponse.fromJson(responseBody);
+        accountVerifyResponse = AccountResponse.fromJson(responseBody);
         if (event.route == "REGISTER") {
           emit(ShowLoginPageState());
           emit(ShowSnackBarActionState(
@@ -144,6 +146,8 @@ class AuthenticationBloc
       AuthenticationLoginEvent event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationLoadingState());
     try {
+      final storage = FirebaseStorage.instance;
+
       AccountModel accountLogin =
           AccountModel(email: event.email, password: event.password);
       var results = await AuthenticationRepository().login(accountLogin);
@@ -155,11 +159,29 @@ class AuthenticationBloc
         SessionResponse sessionResponse =
             SessionResponse.fromJson(responseBody);
         // save info acc
-        AuthPref.setToken(sessionResponse.data!.accessToken.toString());
-        AuthPref.setName(
-            "${sessionResponse.data!.account!.firstName.toString()} ${sessionResponse.data!.account!.lastName.toString()}");
         // AuthPref.setRole(role);
-        AuthPref.setCusId(sessionResponse.data!.account!.accountId as int);
+        if (sessionResponse.data?.account != null) {
+          AuthPref.setToken(sessionResponse.data!.accessToken.toString());
+          AuthPref.setName(
+              "${sessionResponse.data?.account!.firstName.toString()} ${sessionResponse.data!.account!.lastName.toString()}");
+          AuthPref.setCusId(sessionResponse.data?.account!.accountId as int);
+          AuthPref.setPhone(sessionResponse.data!.account!.phone.toString());
+          AuthPref.setEmail(sessionResponse.data!.account!.email.toString());
+          if (sessionResponse.data!.account!.medias != null) {
+            for (var _media in sessionResponse.data!.account!.medias!) {
+              if (_media.isThumbnail!) {
+                try {
+                  var reference = storage.ref(_media.url);
+                  var avatarUrl = await reference.getDownloadURL();
+                  AuthPref.setAvatar(avatarUrl.toString());
+                  break;
+                } catch (e) {
+                  DebugLogger.printLog(e.toString());
+                }
+              }
+            }
+          }
+        }
 
         emit(ShowSnackBarActionState(
             message: "Đăng nhập thành công", success: responseSuccess));

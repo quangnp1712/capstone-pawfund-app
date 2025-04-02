@@ -5,6 +5,10 @@ import 'package:capstone_pawfund_app/features/presentation/authentication/ui/reg
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/verifiction_email_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/menu_page/menu_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/profile_page/bloc/profile_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/profile_page/profile_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -17,6 +21,8 @@ class RouteGenerator {
       LandingNavigationBottomBloc();
   final AuthenticationBloc authenticationBloc = AuthenticationBloc();
   final HomePageBloc homePageBloc = HomePageBloc();
+  final MenuPageBloc menuPageBloc = MenuPageBloc();
+  final ProfilePageBloc profilePageBloc = ProfilePageBloc();
 
   List<GetPage> routes() {
     return [
@@ -36,11 +42,24 @@ class RouteGenerator {
             value: authenticationBloc, child: AuthenticationPage()),
       ),
       GetPage(
+        name: ProfilePage.ProfilePageRoute,
+        page: () => BlocProvider<ProfilePageBloc>.value(
+            value: profilePageBloc, child: const ProfilePage()),
+      ),
+      GetPage(
         name: HomePage.HomePageRoute,
         page: () {
           callback(int index) {} // Hàm callback rỗng hoặc hàm cụ thể của bạn
           return BlocProvider<HomePageBloc>.value(
               value: homePageBloc, child: HomePage(callback));
+        },
+      ),
+      GetPage(
+        name: MenuPage.MenuPageRoute,
+        page: () {
+          callback(int index) {} // Hàm callback rỗng hoặc hàm cụ thể của bạn
+          return BlocProvider<MenuPageBloc>.value(
+              value: menuPageBloc, child: MenuPage(callback));
         },
       ),
       GetPage(

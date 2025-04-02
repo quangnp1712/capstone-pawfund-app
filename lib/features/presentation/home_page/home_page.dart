@@ -44,18 +44,22 @@ class _HomePageState extends State<HomePage> {
           }
         },
         builder: (context, state) {
-          return _buildBody(size);
+          bool isLogin = false;
+          if (state is IsLoginState) {
+            isLogin = state.isLogin;
+          }
+          return _buildBody(size, isLogin);
         });
   }
 
-  Widget _buildBody(Size size) {
+  Widget _buildBody(Size size, bool isLogin) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildHeader(),
+              _buildHeader(isLogin),
               const SizedBox(height: 20),
               _sectionTitle("Loại thú cưng nhận nuôi"),
               SizedBox(
@@ -107,7 +111,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(bool isLogin) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: const BoxDecoration(
@@ -133,28 +137,39 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white, // Màu nền
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Bo góc
-                side: const BorderSide(
-                    color: Colors.deepOrange, width: 2), // Viền
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            ),
-            child: const Text(
-              "Đăng nhập",
-              style: TextStyle(
-                color: Colors.deepOrange,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )
+          isLogin
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.notifications_none,
+                    color: Colors.white,
+                    size: 30,
+                    weight: 0.1,
+                  ),
+                  onPressed: () {},
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white, // Màu nền
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Bo góc
+                      side: const BorderSide(
+                          color: Colors.deepOrange, width: 2), // Viền
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                  ),
+                  child: const Text(
+                    "Đăng nhập",
+                    style: TextStyle(
+                      color: Colors.deepOrange,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
 
           // IconButton(
           //   icon: const Icon(

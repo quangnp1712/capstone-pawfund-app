@@ -10,3 +10,5 @@ sealed class HomePageEvent extends Equatable {
 class HomePageInitialEvent extends HomePageEvent {}
 
 class ShowLoginPageEvent extends HomePageEvent {}
+
+class IsLoginEvent extends HomePageEvent {}

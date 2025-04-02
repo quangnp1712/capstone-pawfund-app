@@ -12,6 +12,22 @@ class AuthPref {
     return SharedPreferencesHelper.preferences.getString("phone") ?? "";
   }
 
+  static Future<void> setEmail(String email) async {
+    await SharedPreferencesHelper.preferences.setString("email", email);
+  }
+
+  static String getEmail() {
+    return SharedPreferencesHelper.preferences.getString("email") ?? "";
+  }
+
+  static Future<void> setAvatar(String avatarUrl) async {
+    await SharedPreferencesHelper.preferences.setString("avatar", avatarUrl);
+  }
+
+  static String getAvatar() {
+    return SharedPreferencesHelper.preferences.getString("avatar") ?? "";
+  }
+
   static Future<void> setAccountId(String accountId) async {
     await SharedPreferencesHelper.preferences.setString("accountId", accountId);
   }

@@ -6,3 +6,9 @@ sealed class MenuPageEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class MenuPageInitialEvent extends MenuPageEvent {}
+
+class IsLoginEvent extends MenuPageEvent {}
+
+class MenuPageShowMenuPageEvent extends MenuPageEvent {}
