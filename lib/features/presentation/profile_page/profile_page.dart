@@ -1,4 +1,5 @@
 import 'package:capstone_pawfund_app/core/utils/utf8_encoding.dart';
+import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/presentation/profile_page/bloc/profile_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
 import 'package:flutter/material.dart';
@@ -57,29 +58,28 @@ class _ProfilePageState extends State<ProfilePage> {
         if (state is ProfilePageLoadedState) {
           final currentState = state as ProfilePageLoadedState;
           firstNameController = TextEditingController(
-              text: Utf8Encoding().decode(
-                  currentState.accountResponse.data!.firstName.toString()));
+              text: Utf8Encoding()
+                  .decode(currentState.accountResponse.firstName.toString()));
           lastNameController = TextEditingController(
-              text: Utf8Encoding().decode(
-                  currentState.accountResponse.data!.lastName.toString()));
+              text: Utf8Encoding()
+                  .decode(currentState.accountResponse.lastName.toString()));
           cccdController = TextEditingController(
-              text: Utf8Encoding().decode(currentState
-                  .accountResponse.data!.identification
-                  .toString()));
+              text: Utf8Encoding().decode(
+                  currentState.accountResponse.identification.toString()));
           phoneController = TextEditingController(
               text: Utf8Encoding()
-                  .decode(currentState.accountResponse.data!.phone.toString()));
+                  .decode(currentState.accountResponse.phone.toString()));
           addressController = TextEditingController(
-              text: Utf8Encoding().decode(
-                  currentState.accountResponse.data!.address.toString()));
+              text: Utf8Encoding()
+                  .decode(currentState.accountResponse.address.toString()));
           emailController = TextEditingController(
               text: Utf8Encoding()
-                  .decode(currentState.accountResponse.data!.email.toString()));
+                  .decode(currentState.accountResponse.email.toString()));
           dobController = TextEditingController(
-              text: Utf8Encoding().decode(
-                  currentState.accountResponse.data!.dateOfBirth.toString()));
+              text: Utf8Encoding()
+                  .decode(currentState.accountResponse.dateOfBirth.toString()));
           genderController = Utf8Encoding()
-              .decode(currentState.accountResponse.data!.genderName.toString());
+              .decode(currentState.accountResponse.genderName.toString());
         }
         return PopScope(
             onPopInvokedWithResult: (didPop, result) {
@@ -270,7 +270,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 10),
-                      hintText: "Nhập họ",
+                      hintText: "Để trống, họ sẽ không thay đổi",
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
@@ -298,13 +298,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       FilteringTextInputFormatter
                           .singleLineFormatter, // Đảm bảo chỉ nhập trên một dòng
                     ],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống Họ của bạn';
-                      }
-
-                      return null; // Trả về null nếu không có lỗi
-                    },
                   ),
                 ],
               ),
@@ -329,7 +322,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 10),
-                      hintText: "Nhập tên",
+                      hintText: "Để trống, Tên sẽ không thay đổi",
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
@@ -357,13 +350,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       FilteringTextInputFormatter
                           .singleLineFormatter, // Đảm bảo chỉ nhập trên một dòng
                     ],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống Tên của bạn';
-                      }
-
-                      return null; // Trả về null nếu không có lỗi
-                    },
                   ),
                 ],
               ),
@@ -387,7 +373,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 10),
-                      hintText: "Nhập căn cước công dân",
+                      hintText:
+                          "Để trống, căn cước công dân sẽ không thay đổi ",
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
@@ -415,13 +402,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       FilteringTextInputFormatter
                           .singleLineFormatter, // Đảm bảo chỉ nhập trên một dòng
                     ],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống cccd của bạn';
-                      }
-
-                      return null; // Trả về null nếu không có lỗi
-                    },
                   ),
                 ],
               ),
@@ -480,7 +460,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 10),
-                      hintText: "Nhập họ",
+                      hintText: "Để trống, Số điện thoại sẽ không thay đổi ",
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
@@ -510,7 +490,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống số điện thoại của bạn';
+                        return null;
                       } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
                         return 'Số điện thoại phải gồm 10 chữ số';
                       }
@@ -539,7 +519,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 10),
-                      hintText: "Nhập địa chỉ",
+                      hintText: "Để trống, Địa chỉ sẽ không thay đổi ",
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
@@ -590,7 +570,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 10),
-                      hintText: "Nhập Ngày sinh dd/mm/yyyy",
+                      hintText: "Để trống, Ngày sinh sẽ không thay đổi ",
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: const BorderSide(
@@ -633,13 +613,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             .toString()
                             .split(" ")[0];
                       }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống Ngày sinh của bạn';
-                      }
-
-                      return null; // Trả về null nếu không có lỗi
                     },
                   ),
                 ],
@@ -717,7 +690,28 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 onPressed: () {
-                  // TODO: Xử lý cập nhật
+                  if (_formKey.currentState!.validate()) {
+                    String genderCode = "MALE";
+                    if (genderController == "NAM") {
+                      genderCode = "MALE";
+                    } else if (genderController == "NỮ") {
+                      genderCode = "FEMALE";
+                    }
+
+                    AccountModel accountModel = AccountModel(
+                        firstName: firstNameController.text,
+                        lastName: lastNameController.text,
+                        identification: cccdController.text,
+                        email: emailController.text,
+                        phone: phoneController.text,
+                        address: addressController.text,
+                        dateOfBirth: dobController.text,
+                        genderName: genderController,
+                        genderCode: genderCode);
+
+                    profilePageBloc.add(
+                        ProfilePageUpdateProfileEvent(account: accountModel));
+                  }
                 },
                 child: const Text("Cập nhật",
                     style: TextStyle(fontSize: 18, color: Colors.white)),

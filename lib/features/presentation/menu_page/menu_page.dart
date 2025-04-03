@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/authentication_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/profile_page/profile_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -34,10 +36,32 @@ class _MenuPageState extends State<MenuPage> {
     return BlocConsumer<MenuPageBloc, MenuPageState>(
       bloc: menuPageBloc,
       listenWhen: (previous, current) => current is MenuPageActionState,
-      listener: (context, state) {},
+      listener: (context, state) {
+        switch (state.runtimeType) {
+          case ShowSnackBarActionState:
+            final snackBarState = state as ShowSnackBarActionState;
+            if (snackBarState.success == true) {
+              ShowSnackBar.SuccessSnackBar(context, snackBarState.message);
+            } else {
+              ShowSnackBar.ErrorSnackBar(context, snackBarState.message);
+            }
+            break;
+        }
+      },
       builder: (context, state) {
         bool isLogin = false;
+        String avatar = "";
+        String name = "";
+        String phone = "";
+        String email = "";
         if (state is IsLoginState) {
+          isLogin = state.isLogin;
+        }
+        if (state is MenuPageLoadedState) {
+          avatar = state.account.avatarUrl ?? "";
+          name = state.account.name ?? "";
+          phone = state.account.phone ?? "";
+          email = state.account.email ?? "";
           isLogin = state.isLogin;
         }
         return Scaffold(
@@ -53,36 +77,50 @@ class _MenuPageState extends State<MenuPage> {
                   children: [
                     _buildHeader(),
                     const SizedBox(height: 20),
-                    isLogin
-                        ? Column(
+                    state is MenuPageLoadingPageState
+                        ? _buildLoadingPage()
+                        : Column(
                             children: [
-                              _buildProfileInfo(size),
-                              const SizedBox(height: 20),
-                              _buildMenuSection("Cá nhân", [
+                              isLogin
+                                  ? Column(
+                                      children: [
+                                        _buildProfileInfo(
+                                            size, avatar, name, phone, email),
+                                        const SizedBox(height: 20),
+                                        _buildMenuSection("Cá nhân", [
+                                          _buildMenuItem(
+                                              Icons.verified,
+                                              "Xem và Chỉnh sửa thông tin",
+                                              ProfilePage.ProfilePageRoute),
+                                          _buildMenuItem(
+                                              Icons.email, "Đổi email", ""),
+                                          _buildMenuItem(
+                                              Icons.lock, "Đổi mật khẩu", ""),
+                                          _buildMenuItem(Icons.pets,
+                                              "Thú cưng đã nhận nuôi", ""),
+                                          _buildMenuItem(Icons.history,
+                                              "Lịch sử quyên góp", ""),
+                                          _buildMenuItem(Icons.favorite,
+                                              "Thú cưng yêu thích", ""),
+                                        ]),
+                                      ],
+                                    )
+                                  : _buildLoginButton(size),
+                              _buildMenuSection("Hệ thống", [
+                                _buildMenuItem(Icons.location_on,
+                                    "Trung tâm cứu trợ gần đây", ""),
                                 _buildMenuItem(
-                                    Icons.verified,
-                                    "Xem và Chỉnh sửa thông tin",
-                                    ProfilePage.ProfilePageRoute),
-                                _buildMenuItem(Icons.email, "Đổi email", ""),
-                                _buildMenuItem(Icons.lock, "Đổi mật khẩu", ""),
+                                    Icons.message, "Hộp thư phản hồi", ""),
                                 _buildMenuItem(
-                                    Icons.pets, "Thú cưng đã nhận nuôi", ""),
-                                _buildMenuItem(
-                                    Icons.history, "Lịch sử quyên góp", ""),
-                                _buildMenuItem(
-                                    Icons.favorite, "Thú cưng yêu thích", ""),
+                                    Icons.settings, "Cài đặt & Bảo mật", ""),
                               ]),
+                              isLogin
+                                  ? _buildMenuItem(
+                                      Icons.logout, "Đăng xuất", "",
+                                      isLogout: true)
+                                  : Container(),
                             ],
-                          )
-                        : _buildLoginButton(size),
-                    _buildMenuSection("Hệ thống", [
-                      _buildMenuItem(
-                          Icons.location_on, "Trung tâm cứu trợ gần đây", ""),
-                      _buildMenuItem(Icons.message, "Hộp thư phản hồi", ""),
-                      _buildMenuItem(Icons.settings, "Cài đặt & Bảo mật", ""),
-                    ]),
-                    _buildMenuItem(Icons.logout, "Đăng xuất", "",
-                        isLogout: true),
+                          ),
                   ],
                 ),
               ),
@@ -90,6 +128,21 @@ class _MenuPageState extends State<MenuPage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildLoadingPage() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 30),
+          height: 50,
+          width: 50,
+          child: const CircularProgressIndicator(),
+        )
+      ],
     );
   }
 
@@ -139,18 +192,49 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget _buildProfileInfo(Size size) {
-    return const Align(
+  Widget _buildProfileInfo(Size size, avatar, name, phone, email) {
+    return Align(
       alignment: Alignment.center,
       child: Column(
         children: [
-          CircleAvatar(
-            radius: 60,
-            backgroundImage: AssetImage('assets/images/avatar.png'),
+          SizedBox(
+            width: 120,
+            height: 120,
+            child: CircleAvatar(
+              child: ClipOval(
+                child: avatar != null
+                    ? CachedNetworkImage(
+                        imageUrl: avatar!,
+                        // placeholder: (context, url) =>
+                        //     const CircularProgressIndicator(),
+                        fit: BoxFit.cover,
+                        // width: 120,
+                        // height: 120,
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            Center(
+                          child: CircularProgressIndicator(
+                            value: progress.progress,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          "assets/images/avatar.png",
+                          fit: BoxFit.cover,
+                          width: 120,
+                          height: 120,
+                        ),
+                      )
+                    : Image.asset(
+                        "assets/images/avatar.png",
+                        fit: BoxFit.cover,
+                        width: 120,
+                        height: 120,
+                      ),
+              ),
+            ),
           ),
           SizedBox(height: 10),
           Text(
-            'Nguyễn Phương Quang',
+            name,
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w500,
@@ -165,14 +249,14 @@ class _MenuPageState extends State<MenuPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  "090999999",
+                  phone,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w300,
                       color: Colors.black),
                 ),
                 Text(
-                  "090999999",
+                  email,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w300,
@@ -193,8 +277,14 @@ class _MenuPageState extends State<MenuPage> {
           height: 200,
           child: Center(
             child: ElevatedButton(
-              onPressed: () {
-                Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+              onPressed: () async {
+                // Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+                final result = await Get.to(
+                    () => AuthenticationPage()); // Chuyển đến PageB
+
+                if (result == true) {
+                  menuPageBloc.add(MenuPageInitialEvent());
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF36439),
@@ -270,7 +360,7 @@ class _MenuPageState extends State<MenuPage> {
           ? null
           : const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
       onTap: () {
-        Get.toNamed(route);
+        isLogout ? menuPageBloc.add(MenuPageLogoutEvent()) : Get.toNamed(route);
       },
     );
   }

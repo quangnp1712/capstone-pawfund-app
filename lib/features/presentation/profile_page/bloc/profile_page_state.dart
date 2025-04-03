@@ -16,7 +16,7 @@ class ProfilePageLoadingState extends ProfilePageActionState {}
 class ProfilePageLoadingPageState extends ProfilePageState {}
 
 class ProfilePageLoadedState extends ProfilePageState {
-  final AccountResponse accountResponse;
+  final AccountModel accountResponse;
 
   ProfilePageLoadedState({required this.accountResponse});
 }

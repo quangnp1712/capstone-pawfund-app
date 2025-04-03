@@ -10,3 +10,9 @@ sealed class ProfilePageEvent extends Equatable {
 class ProfilePageInitialEvent extends ProfilePageEvent {}
 
 class ProfilePageLoadedEvent extends ProfilePageEvent {}
+
+class ProfilePageUpdateProfileEvent extends ProfilePageEvent {
+  final AccountModel account;
+
+  ProfilePageUpdateProfileEvent({required this.account});
+}

@@ -22,6 +22,10 @@ class AccountModel {
   String? statusName;
   List<MediaModel>? medias;
 
+  // bo sung feild
+  String? name;
+  String? avatarUrl;
+
   AccountModel({
     this.accountId,
     this.firstName,

@@ -15,9 +15,13 @@ abstract class IAuthenticationRepository {
 
   Future<Map<String, dynamic>> login(AccountModel accountLogin);
 
+  Future<Map<String, dynamic>> logout();
+
   Future<Map<String, dynamic>> register(AccountModel accountModel);
 
   Future<Map<String, dynamic>> selfDetail();
+
+  Future<Map<String, dynamic>> updateProfile(AccountModel accountModel);
 }
 
 class AuthenticationRepository extends ApiEndpoints
@@ -116,6 +120,52 @@ class AuthenticationRepository extends ApiEndpoints
       Uri uri = Uri.parse("$AccountSelfDetailUrl");
       final client = http.Client();
       final response = await client.get(
+        uri,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': 'Bearer $jwtToken',
+        },
+      ).timeout(const Duration(seconds: 180));
+      return processResponse(response);
+    } catch (e) {
+      return ExceptionHandlers().getExceptionString(e);
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateProfile(AccountModel accountModel) async {
+    try {
+      final String jwtToken = AuthPref.getToken().toString();
+
+      Uri uri = Uri.parse("$AccountUpdateProfileUrl");
+      final client = http.Client();
+      final response = await client
+          .put(
+            uri,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+              'Authorization': 'Bearer $jwtToken',
+            },
+            body: accountModel.toJson(),
+          )
+          .timeout(const Duration(seconds: 180));
+      return processResponse(response);
+    } catch (e) {
+      return ExceptionHandlers().getExceptionString(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> logout() async {
+    try {
+      final String jwtToken = AuthPref.getToken().toString();
+
+      Uri uri = Uri.parse("$SessionLogoutUrl");
+      final client = http.Client();
+      final response = await client.put(
         uri,
         headers: {
           "Access-Control-Allow-Origin": "*",

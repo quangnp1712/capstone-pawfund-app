@@ -20,3 +20,19 @@ class IsLoginState extends MenuPageState {
 
   IsLoginState({required this.isLogin});
 }
+
+class ShowSnackBarActionState extends MenuPageActionState {
+  final String message;
+  final bool success;
+
+  ShowSnackBarActionState({required this.success, required this.message});
+}
+
+class MenuPageLoadingPageState extends MenuPageState {}
+
+class MenuPageLoadedState extends MenuPageState {
+  final AccountModel account;
+  final bool isLogin;
+
+  MenuPageLoadedState({required this.account, required this.isLogin});
+}

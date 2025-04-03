@@ -188,7 +188,7 @@ class AuthenticationBloc
         if (_routeFrom == "HOME") {
           Get.toNamed(HomePage.HomePageRoute);
         }
-        Get.back();
+        Get.back(result: true);
       } else {
         emit(ShowSnackBarActionState(
             message: responseMessage, success: responseSuccess));

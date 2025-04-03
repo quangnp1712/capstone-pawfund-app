@@ -1,5 +1,7 @@
 import 'package:capstone_pawfund_app/features/data/services/location_service.dart';
 import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences_helper.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
+import 'package:get/get.dart';
 
 class AuthPref {
   static ILocationService locationService = LocationService();
@@ -44,10 +46,10 @@ class AuthPref {
     return SharedPreferencesHelper.preferences.getString("token") ?? "";
   }
 
-  // static Future<void> logout() async {
-  //   await SharedPreferencesHelper.preferences.clear();
-  //   Get.offAllNamed(AuthenticationPage.AuthenticationPageRoute);
-  // }
+  static Future<void> logout() async {
+    await SharedPreferencesHelper.preferences.clear();
+    Get.offAllNamed(LandingNavBottomWidget.LandingNavBottomWidgetRoute);
+  }
 
   static Future<void> setName(String nameCus) async {
     await SharedPreferencesHelper.preferences.setString("nameCus", nameCus);

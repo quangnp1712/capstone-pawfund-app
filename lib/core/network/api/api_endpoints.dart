@@ -17,7 +17,12 @@ class ApiEndpoints {
 
   final String AccountSelfDetailUrl = "$domainUrl/v1/api/account/self-detail";
 
+  final String AccountUpdateProfileUrl = "$domainUrl/v1/api/account";
+
   //! Session API !//
   // Login
   final String SessionLoginUrl = "$domainUrl/v1/public/session/login";
+
+  // Logout
+  final String SessionLogoutUrl = "$domainUrl/v1/api/session/logout";
 }
