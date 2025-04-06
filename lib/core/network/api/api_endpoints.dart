@@ -4,8 +4,11 @@ class ApiEndpoints {
   static String domainUrl = "${dotenv.env["DOMAIN"]}";
 
   //! Verification Code API !//
-  final String AccountVerificationUrl =
+  final String AccountSendVerificationUrl =
       "$domainUrl/v1/public/verification-code/account-verification/send";
+
+  final String AccountSendVerificationNewEmailUrl =
+      "$domainUrl/v1/api/verification-code/email-verification/send";
 
   //! Account API !//
   // register
@@ -18,6 +21,11 @@ class ApiEndpoints {
   final String AccountSelfDetailUrl = "$domainUrl/v1/api/account/self-detail";
 
   final String AccountUpdateProfileUrl = "$domainUrl/v1/api/account";
+
+  final String AccountSelfChangePasswordUrl =
+      "$domainUrl/v1/api/account/self-change-password";
+
+  final String AccountChangeEmailUrl = "$domainUrl/v1/api/account/email-verify";
 
   //! Session API !//
   // Login

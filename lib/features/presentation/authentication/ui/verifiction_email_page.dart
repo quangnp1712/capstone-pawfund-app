@@ -12,8 +12,6 @@ class VerifictionEmailPage extends StatefulWidget {
 
   @override
   State<VerifictionEmailPage> createState() => _VerifictionEmailPageState();
-
-  static const String VerifictionEmailPageRoute = "/verification-email";
 }
 
 class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
@@ -211,7 +209,6 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                           fontWeight: FontWeight.w600),
                     ),
                     TextFormField(
-                      obscureText: true,
                       controller: verificationCodeController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
@@ -287,7 +284,10 @@ class _VerifictionEmailPageState extends State<VerifictionEmailPage> {
                     // Sign Up
                     Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.bloc.add(SendVerificationAccountEvent(
+                              email: emailController.text));
+                        },
                         child: const Text(
                           'Gửi lại mã xác thực Email',
                           style: TextStyle(

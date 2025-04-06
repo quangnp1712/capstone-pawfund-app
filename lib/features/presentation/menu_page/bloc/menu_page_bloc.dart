@@ -117,8 +117,8 @@ class MenuPageBloc extends Bloc<MenuPageEvent, MenuPageState> {
             message: "Đăng xuất thành công", success: responseSuccess));
         AuthPref.logout();
       } else {
-        emit(ShowSnackBarActionState(
-            message: responseMessage, success: responseSuccess));
+        AuthPref.logout();
+        DebugLogger.printLog(responseMessage);
       }
     } catch (e) {}
   }

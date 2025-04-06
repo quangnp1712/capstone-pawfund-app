@@ -23,7 +23,6 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   SendVerificationModel? _sendVerificationModel;
   AccountModel? _accountModel;
-  String _routeFrom = "";
 
   AuthenticationBloc() : super(AuthenticationInitial()) {
     on<AuthenticationInitialEvent>(_authenticationInitialEvent);
@@ -38,12 +37,6 @@ class AuthenticationBloc
   FutureOr<void> _authenticationInitialEvent(
       AuthenticationInitialEvent event, Emitter<AuthenticationState> emit) {
     try {
-      if (event.routeTo == "LOGIN") {
-        emit(ShowLoginPageState());
-      }
-      if (event.routeFrom != "") {
-        _routeFrom = event.routeFrom;
-      }
       emit(ShowLoginPageState());
     } catch (e) {}
   }
@@ -62,31 +55,44 @@ class AuthenticationBloc
   FutureOr<void> _sendVerificationAccountEvent(
       SendVerificationAccountEvent event,
       Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
+    emit(AuthenticationChangeState());
+    emit(AuthenticationLoadingState(isLoading: true));
+    emit(AuthenticationChangeState());
+
     try {
       var results =
-          await AuthenticationRepository().verificationAccount(event.email);
+          await AuthenticationRepository().sendVerificationAccount(event.email);
       var responseMessage = results['message'];
       var responseStatus = results['status'];
       var responseSuccess = results['success'];
       var responseBody = results['body'];
       SendVerificationResponse sendVerificationResponse;
+      emit(AuthenticationLoadingState(isLoading: false));
 
       if (responseSuccess) {
         sendVerificationResponse =
             SendVerificationResponse.fromJson(responseBody);
         _sendVerificationModel = sendVerificationResponse.data;
+        emit(ShowSnackBarActionState(
+            message: "Gửi mã xác thực thành công. Bạn hãy kiểm tra email!",
+            success: responseSuccess));
       } else {
         emit(ShowSnackBarActionState(
             message: responseMessage, success: responseSuccess));
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(AuthenticationLoadingState(isLoading: false));
+      DebugLogger.printLog(e.toString());
+    }
   }
 
   FutureOr<void> _verificationAccountCodeEvent(
       VerificationAccountCodeEvent event,
       Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
+    emit(AuthenticationChangeState());
+    emit(AuthenticationLoadingState(isLoading: true));
+    emit(AuthenticationChangeState());
+
     try {
       AccountVerificationCodeModel accountVerificationCodeModel =
           AccountVerificationCodeModel(
@@ -99,10 +105,11 @@ class AuthenticationBloc
       var responseBody = results['body'];
       AccountResponse accountVerifyResponse;
 
+      emit(AuthenticationLoadingState(isLoading: false));
       if (responseSuccess) {
         accountVerifyResponse = AccountResponse.fromJson(responseBody);
         if (event.route == "REGISTER") {
-          emit(ShowLoginPageState());
+          emit(ShowLoginPageState(email: event.email));
           emit(ShowSnackBarActionState(
               message: "Kích hoạt tài khoản thành công",
               success: responseSuccess));
@@ -115,13 +122,17 @@ class AuthenticationBloc
             message: responseMessage, success: responseSuccess));
       }
     } catch (e) {
+      emit(AuthenticationLoadingState(isLoading: false));
       DebugLogger.printLog(e.toString());
     }
   }
 
   FutureOr<void> _authenticationRegisterEvent(AuthenticationRegisterEvent event,
       Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
+    emit(AuthenticationChangeState());
+
+    emit(AuthenticationLoadingState(isLoading: true));
+    emit(AuthenticationChangeState());
     try {
       var results =
           await AuthenticationRepository().register(event.accountModel);
@@ -129,6 +140,7 @@ class AuthenticationBloc
       var responseStatus = results['status'];
       var responseSuccess = results['success'];
       var responseBody = results['body'];
+      emit(AuthenticationLoadingState(isLoading: false));
 
       if (responseSuccess) {
         emit(ShowSnackBarActionState(
@@ -139,12 +151,18 @@ class AuthenticationBloc
         emit(ShowSnackBarActionState(
             message: responseMessage, success: responseSuccess));
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(AuthenticationLoadingState(isLoading: false));
+      DebugLogger.printLog(e.toString());
+    }
   }
 
   FutureOr<void> _authenticationLoginEvent(
       AuthenticationLoginEvent event, Emitter<AuthenticationState> emit) async {
-    emit(AuthenticationLoadingState());
+    emit(AuthenticationChangeState());
+
+    emit(AuthenticationLoadingState(isLoading: true));
+    emit(AuthenticationChangeState());
     try {
       final storage = FirebaseStorage.instance;
 
@@ -167,6 +185,7 @@ class AuthenticationBloc
           AuthPref.setCusId(sessionResponse.data?.account!.accountId as int);
           AuthPref.setPhone(sessionResponse.data!.account!.phone.toString());
           AuthPref.setEmail(sessionResponse.data!.account!.email.toString());
+          AuthPref.setPassword(event.password.toString());
           if (sessionResponse.data!.account!.medias != null) {
             for (var _media in sessionResponse.data!.account!.medias!) {
               if (_media.isThumbnail!) {
@@ -182,17 +201,34 @@ class AuthenticationBloc
             }
           }
         }
+        emit(AuthenticationLoadingState(isLoading: false));
 
         emit(ShowSnackBarActionState(
             message: "Đăng nhập thành công", success: responseSuccess));
-        if (_routeFrom == "HOME") {
-          Get.toNamed(HomePage.HomePageRoute);
-        }
+
         Get.back(result: true);
+      } else if (responseStatus == 404) {
+        emit(AuthenticationLoadingState(isLoading: false));
+
+        emit(ShowSnackBarActionState(
+            message: "Email hoặc mật khẩu không đúng",
+            success: responseSuccess));
+      } else if (responseStatus == 401) {
+        emit(AuthenticationLoadingState(isLoading: false));
+        add(SendVerificationAccountEvent(email: event.email));
+        emit(ShowVerificationEmailState(email: event.email));
+
+        emit(ShowSnackBarActionState(
+            message: responseMessage, success: responseSuccess));
       } else {
+        emit(AuthenticationLoadingState(isLoading: false));
+
         emit(ShowSnackBarActionState(
             message: responseMessage, success: responseSuccess));
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(AuthenticationLoadingState(isLoading: false));
+      DebugLogger.printLog(e.toString());
+    }
   }
 }

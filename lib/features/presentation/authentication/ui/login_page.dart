@@ -12,15 +12,15 @@ import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/a
 
 class LoginPage extends StatefulWidget {
   final AuthenticationBloc bloc;
+  final String? email;
   const LoginPage({
     super.key,
     required this.bloc,
+    this.email,
   });
 
   @override
   _LoginPageState createState() => _LoginPageState();
-
-  static const String LoginPageRoute = "/login";
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -35,9 +35,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    if (kDebugMode) {
-      DebugLogger.printLog('Previous Route: ${Get.previousRoute}');
-      DebugLogger.printLog('Current Route: ${Get.currentRoute}');
+    DebugLogger.printLog(Get.currentRoute);
+    DebugLogger.printLog(Get.previousRoute);
+    if (widget.email != null) {
+      emailController.text = widget.email ?? "";
     }
     super.initState();
   }
@@ -313,20 +314,20 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 5),
 
-                  // Sign Up
-                  Center(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Quên mật khẩu',
-                        style: TextStyle(
-                          color: Color(0xFFF36439),
-                          decoration: TextDecoration.underline,
-                          decorationColor: Color(0xFFF36439),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // // Sign Up
+                  // Center(
+                  //   child: TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text(
+                  //       'Quên mật khẩu',
+                  //       style: TextStyle(
+                  //         color: Color(0xFFF36439),
+                  //         decoration: TextDecoration.underline,
+                  //         decorationColor: Color(0xFFF36439),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

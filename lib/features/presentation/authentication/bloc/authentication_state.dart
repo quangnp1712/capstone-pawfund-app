@@ -10,7 +10,11 @@ final class AuthenticationInitial extends AuthenticationState {}
 
 abstract class AuthenticationActionState extends AuthenticationState {}
 
-class ShowLoginPageState extends AuthenticationState {}
+class ShowLoginPageState extends AuthenticationState {
+  final String? email;
+
+  ShowLoginPageState({this.email});
+}
 
 class ShowSnackBarActionState extends AuthenticationActionState {
   final String message;
@@ -25,7 +29,13 @@ class ShowRegisterPageState extends AuthenticationState {
   ShowRegisterPageState({this.gender});
 }
 
-class AuthenticationLoadingState extends AuthenticationActionState {}
+class AuthenticationLoadingState extends AuthenticationActionState {
+  final bool isLoading;
+
+  AuthenticationLoadingState({required this.isLoading});
+}
+
+class AuthenticationChangeState extends AuthenticationActionState {}
 
 class RegisterSuccessState extends AuthenticationActionState {}
 

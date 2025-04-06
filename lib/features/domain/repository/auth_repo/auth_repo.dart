@@ -8,7 +8,7 @@ import 'package:capstone_pawfund_app/features/data/shared_preferences/auth_pref.
 import 'package:http/http.dart' as http;
 
 abstract class IAuthenticationRepository {
-  Future<Map<String, dynamic>> verificationAccount(String email);
+  Future<Map<String, dynamic>> sendVerificationAccount(String email);
 
   Future<Map<String, dynamic>> verificationAccountCode(
       AccountVerificationCodeModel accountVerificationCodeModel);
@@ -22,6 +22,12 @@ abstract class IAuthenticationRepository {
   Future<Map<String, dynamic>> selfDetail();
 
   Future<Map<String, dynamic>> updateProfile(AccountModel accountModel);
+
+  Future<Map<String, dynamic>> changePassword(String password);
+
+  Future<Map<String, dynamic>> sendVerificationChangeEmail(String email);
+
+  Future<Map<String, dynamic>> changeEmail(String code);
 }
 
 class AuthenticationRepository extends ApiEndpoints
@@ -49,10 +55,10 @@ class AuthenticationRepository extends ApiEndpoints
   }
 
   @override
-  Future<Map<String, dynamic>> verificationAccount(String email) async {
+  Future<Map<String, dynamic>> sendVerificationAccount(String email) async {
     try {
-      Uri uri =
-          Uri.parse("$AccountVerificationUrl?verificationCodeRequest=$email");
+      Uri uri = Uri.parse(
+          "$AccountSendVerificationUrl?verificationCodeRequest=$email");
       final client = http.Client();
       final response = await client.post(
         uri,
@@ -174,6 +180,80 @@ class AuthenticationRepository extends ApiEndpoints
           'Authorization': 'Bearer $jwtToken',
         },
       ).timeout(const Duration(seconds: 180));
+      return processResponse(response);
+    } catch (e) {
+      return ExceptionHandlers().getExceptionString(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> changePassword(String password) async {
+    try {
+      final String jwtToken = AuthPref.getToken().toString();
+      AccountModel accountModel = AccountModel(password: password);
+      Uri uri = Uri.parse("$AccountSelfChangePasswordUrl");
+      final client = http.Client();
+      final response = await client
+          .patch(
+            uri,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+              'Authorization': 'Bearer $jwtToken',
+            },
+            body: accountModel.toJson(),
+          )
+          .timeout(const Duration(seconds: 180));
+      return processResponse(response);
+    } catch (e) {
+      return ExceptionHandlers().getExceptionString(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> sendVerificationChangeEmail(email) async {
+    try {
+      final String jwtToken = AuthPref.getToken().toString();
+      AccountModel accountModel = AccountModel(email: email);
+
+      Uri uri = Uri.parse("$AccountSendVerificationNewEmailUrl");
+      final client = http.Client();
+      final response = await client
+          .post(
+            uri,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+              'Authorization': 'Bearer $jwtToken',
+            },
+            body: accountModel.toJson(),
+          )
+          .timeout(const Duration(seconds: 180));
+      return processResponse(response);
+    } catch (e) {
+      return ExceptionHandlers().getExceptionString(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> changeEmail(code) async {
+    try {
+      final String jwtToken = AuthPref.getToken().toString();
+      AccountVerificationCodeModel accountVerificationCodeModel =
+          AccountVerificationCodeModel(verificationCode: code);
+      Uri uri = Uri.parse("$AccountChangeEmailUrl");
+      final client = http.Client();
+      final response = await client
+          .patch(
+            uri,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+              'Authorization': 'Bearer $jwtToken',
+            },
+            body: accountVerificationCodeModel.toJson(),
+          )
+          .timeout(const Duration(seconds: 180));
       return processResponse(response);
     } catch (e) {
       return ExceptionHandlers().getExceptionString(e);

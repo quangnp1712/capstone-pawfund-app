@@ -69,8 +69,8 @@ class _LandingNavBottomWidgetState extends State<LandingNavBottomWidget> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       HomePage(setPage),
-      ShelterPage(setPage),
       AdoptionPage(setPage),
+      ShelterPage(setPage),
       FundingPage(setPage),
       MenuPage(setPage),
     ];

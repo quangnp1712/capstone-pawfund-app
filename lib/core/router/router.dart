@@ -3,6 +3,10 @@ import 'package:capstone_pawfund_app/features/presentation/authentication/ui/aut
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/register_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/verifiction_email_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_email_page/bloc/change_email_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_email_page/change_email_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_pass_page/bloc/change_pass_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_pass_page/change_pass_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
@@ -23,6 +27,8 @@ class RouteGenerator {
   final HomePageBloc homePageBloc = HomePageBloc();
   final MenuPageBloc menuPageBloc = MenuPageBloc();
   final ProfilePageBloc profilePageBloc = ProfilePageBloc();
+  final ChangePassPageBloc changePassPageBloc = ChangePassPageBloc();
+  final ChangeEmailPageBloc changeEmailPageBloc = ChangeEmailPageBloc();
 
   List<GetPage> routes() {
     return [
@@ -47,6 +53,16 @@ class RouteGenerator {
             value: profilePageBloc, child: const ProfilePage()),
       ),
       GetPage(
+        name: ChangePassPage.ChangePassPageRoute,
+        page: () => BlocProvider<ChangePassPageBloc>.value(
+            value: changePassPageBloc, child: const ChangePassPage()),
+      ),
+      GetPage(
+        name: ChangeEmailPage.ChangeEmailPageRoute,
+        page: () => BlocProvider<ChangeEmailPageBloc>.value(
+            value: changeEmailPageBloc, child: const ChangeEmailPage()),
+      ),
+      GetPage(
         name: HomePage.HomePageRoute,
         page: () {
           callback(int index) {} // Hàm callback rỗng hoặc hàm cụ thể của bạn
@@ -61,27 +77,6 @@ class RouteGenerator {
           return BlocProvider<MenuPageBloc>.value(
               value: menuPageBloc, child: MenuPage(callback));
         },
-      ),
-      GetPage(
-        name: LoginPage.LoginPageRoute,
-        page: () => BlocProvider<AuthenticationBloc>.value(
-          value: authenticationBloc,
-          child: LoginPage(
-            bloc: authenticationBloc,
-          ),
-        ),
-      ),
-      GetPage(
-        name: RegisterPage.RegisterPageRoute,
-        page: () => BlocProvider<AuthenticationBloc>.value(
-            value: authenticationBloc,
-            child: RegisterPage(bloc: authenticationBloc)),
-      ),
-      GetPage(
-        name: VerifictionEmailPage.VerifictionEmailPageRoute,
-        page: () => BlocProvider<AuthenticationBloc>.value(
-            value: authenticationBloc,
-            child: VerifictionEmailPage(bloc: authenticationBloc, email: "")),
       ),
     ];
   }

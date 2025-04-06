@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/authentication_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_email_page/change_email_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_pass_page/change_pass_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/profile_page/profile_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/snackbar/snackbar.dart';
@@ -32,6 +34,11 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    bool isLogin = false;
+    String avatar = "";
+    String name = "";
+    String phone = "";
+    String email = "";
 
     return BlocConsumer<MenuPageBloc, MenuPageState>(
       bloc: menuPageBloc,
@@ -49,11 +56,6 @@ class _MenuPageState extends State<MenuPage> {
         }
       },
       builder: (context, state) {
-        bool isLogin = false;
-        String avatar = "";
-        String name = "";
-        String phone = "";
-        String email = "";
         if (state is IsLoginState) {
           isLogin = state.isLogin;
         }
@@ -93,9 +95,15 @@ class _MenuPageState extends State<MenuPage> {
                                               "Xem và Chỉnh sửa thông tin",
                                               ProfilePage.ProfilePageRoute),
                                           _buildMenuItem(
-                                              Icons.email, "Đổi email", ""),
+                                              Icons.email,
+                                              "Đổi email",
+                                              ChangeEmailPage
+                                                  .ChangeEmailPageRoute),
                                           _buildMenuItem(
-                                              Icons.lock, "Đổi mật khẩu", ""),
+                                              Icons.lock,
+                                              "Đổi mật khẩu",
+                                              ChangePassPage
+                                                  .ChangePassPageRoute),
                                           _buildMenuItem(Icons.pets,
                                               "Thú cưng đã nhận nuôi", ""),
                                           _buildMenuItem(Icons.history,
@@ -232,35 +240,55 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             name,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w500,
               color: Colors.black,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           SizedBox(
-            width: 340,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  phone,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black),
+                Row(
+                  children: [
+                    const Icon(Icons.phone, color: Color(0xFFF36439), size: 20),
+                    const SizedBox(width: 4),
+                    Text(
+                      phone,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
-                Text(
-                  email,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black),
+                const SizedBox(width: 30),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.email,
+                      color: Color(0xFFF36439),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      email,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -278,13 +306,8 @@ class _MenuPageState extends State<MenuPage> {
           child: Center(
             child: ElevatedButton(
               onPressed: () async {
-                // Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
-                final result = await Get.to(
-                    () => AuthenticationPage()); // Chuyển đến PageB
-
-                if (result == true) {
-                  menuPageBloc.add(MenuPageInitialEvent());
-                }
+                await Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+                menuPageBloc.add(MenuPageInitialEvent());
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFF36439),

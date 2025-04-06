@@ -36,10 +36,7 @@ class _HomePageState extends State<HomePage> {
         listener: (context, state) {
           switch (state.runtimeType) {
             case ShowLoginPageState:
-              Get.toNamed(
-                LoginPage.LoginPageRoute,
-              );
-              // Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+              Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
               break;
           }
         },
@@ -148,8 +145,10 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {},
                 )
               : ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(AuthenticationPage.AuthenticationPageRoute);
+                  onPressed: () async {
+                    await Get.toNamed(
+                        AuthenticationPage.AuthenticationPageRoute);
+                    homePageBloc.add(HomePageInitialEvent());
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white, // Màu nền

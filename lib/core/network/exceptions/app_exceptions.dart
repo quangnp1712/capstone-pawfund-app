@@ -45,6 +45,11 @@ class InternalServerErrorException extends AppException {
       : super(message, 'Internal Server Error', status);
 }
 
+class ConflictErrorException extends AppException {
+  ConflictErrorException([String? message, int? status])
+      : super(message, 'Internal Server Error', status);
+}
+
 dynamic processResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
@@ -68,6 +73,9 @@ dynamic processResponse(http.Response response) {
           jsonDecode(response.body)['data'], response.statusCode);
     case 500: //Internal Server Error
       throw InternalServerErrorException(
+          jsonDecode(response.body)['data'], response.statusCode);
+    case 409: //Internal Server Error
+      throw ConflictErrorException(
           jsonDecode(response.body)['data'], response.statusCode);
     default:
       throw FetchDataException('Something went wrong! ${response.statusCode}');

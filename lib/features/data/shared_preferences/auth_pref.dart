@@ -74,4 +74,12 @@ class AuthPref {
   static int getCusId() {
     return SharedPreferencesHelper.preferences.getInt("cusId") ?? 0;
   }
+
+  static Future<void> setPassword(String password) async {
+    await SharedPreferencesHelper.preferences.setString("password", password);
+  }
+
+  static String getPassword() {
+    return SharedPreferencesHelper.preferences.getString("password") ?? "";
+  }
 }

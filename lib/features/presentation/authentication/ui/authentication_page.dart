@@ -15,10 +15,8 @@ import 'package:capstone_pawfund_app/features/presentation/widgets/dialog/loadin
 import 'package:capstone_pawfund_app/features/presentation/widgets/snackbar/snackbar.dart';
 
 class AuthenticationPage extends StatefulWidget {
-  String? route;
   AuthenticationPage({
     Key? key,
-    this.route,
   }) : super(key: key);
 
   static const String AuthenticationPageRoute = "/auth";
@@ -29,18 +27,13 @@ class AuthenticationPage extends StatefulWidget {
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
   final AuthenticationBloc authPageBloc = AuthenticationBloc();
-  String routeTo = "";
-  String routeFrom = "";
+
   CloseDialog? _closeDialogHandle;
   ShowDialog? _showDialogHandle;
 
   @override
   void initState() {
-    authPageBloc.add(
-        AuthenticationInitialEvent(routeTo: routeTo, routeFrom: routeFrom));
-    DebugLogger.printLog('Current Route: ${Get.currentRoute}');
-    DebugLogger.printLog('Route History: ${Get.routing.previous}');
-
+    authPageBloc.add(AuthenticationInitialEvent());
     super.initState();
   }
 
@@ -60,31 +53,27 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ShowSnackBar.ErrorSnackBar(context, snackBarState.message);
             }
             break;
-
-          // case ShowLoginPageState:
-          //   // return LoginPage(
-          //   //   bloc: authPageBloc,
-          //   // );
-          //   Get.toNamed(LoginPage.LoginPageRoute);
-          //   break;
-
-          // case AuthenticationSuccessState:
-          //   final successState = state as AuthenticationSuccessState;
-          //   print("token:${successState.token}");
-          //   Get.offAllNamed(LandingPage.LandingPageRoute,
-          //       arguments: {'token': successState.token});
-          //   break;
-
-          // case ShowLandingPageState:
-          //   Get.offAllNamed(LandingPage.LandingPageRoute);
-          //   break;
+          case AuthenticationLoadingState:
+            final currentState = state as AuthenticationLoadingState;
+            if (!currentState.isLoading) {
+              _closeDialogHandle = closeLoadingDialog(context: context);
+              _closeDialogHandle!(); // Gọi ngay
+              _closeDialogHandle = null;
+              _showDialogHandle = null;
+            } else if (currentState.isLoading) {
+              _showDialogHandle = showLoadingDialog(context: context);
+              _showDialogHandle!(); // Gọi ngay
+            }
+            break;
         }
       },
       builder: (context, state) {
         switch (state.runtimeType) {
           case ShowLoginPageState:
+            final currentState = state as ShowLoginPageState;
             return LoginPage(
               bloc: authPageBloc,
+              email: currentState.email,
             );
           case ShowRegisterPageState:
             return RegisterPage(

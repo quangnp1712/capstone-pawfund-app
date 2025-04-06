@@ -2,6 +2,8 @@ import 'package:capstone_pawfund_app/core/router/router.dart';
 import 'package:capstone_pawfund_app/features/data/services/splash_service.dart';
 import 'package:capstone_pawfund_app/features/data/shared_preferences/shared_preferences_helper.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_email_page/bloc/change_email_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/change_pass_page/bloc/change_pass_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/pages/splash_page.dart';
@@ -74,6 +76,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => HomePageBloc()),
           BlocProvider(create: (_) => MenuPageBloc()),
           BlocProvider(create: (_) => ProfilePageBloc()),
+          BlocProvider(create: (_) => ChangePassPageBloc()),
+          BlocProvider(create: (_) => ChangeEmailPageBloc()),
         ],
         child: GetMaterialApp(
           localizationsDelegates: const [

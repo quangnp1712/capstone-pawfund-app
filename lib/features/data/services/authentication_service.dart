@@ -5,6 +5,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 abstract class IAuthenticationService {
   Future<bool> checkJwtExpired();
+  Future<bool> checkPassord(String password);
 }
 
 class AuthenticationService extends IAuthenticationService {
@@ -43,5 +44,20 @@ class AuthenticationService extends IAuthenticationService {
     final dateNow = DateTime.now();
     final check = expiration.isBefore(dateNow);
     return expiration.isBefore(dateNow);
+  }
+
+  @override
+  Future<bool> checkPassord(password) async {
+    try {
+      String passwordPref = AuthPref.getPassword();
+      if (passwordPref == password) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (e) {
+      DebugLogger.printLog(e.toString());
+      return false;
+    }
   }
 }

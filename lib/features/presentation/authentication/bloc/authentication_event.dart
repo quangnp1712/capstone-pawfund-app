@@ -5,12 +5,7 @@ sealed class AuthenticationEvent {
   const AuthenticationEvent();
 }
 
-class AuthenticationInitialEvent extends AuthenticationEvent {
-  final String routeTo;
-  final String routeFrom;
-
-  AuthenticationInitialEvent({required this.routeTo, required this.routeFrom});
-}
+class AuthenticationInitialEvent extends AuthenticationEvent {}
 
 class AuthenticationShowLoginEvent extends AuthenticationEvent {}
 
