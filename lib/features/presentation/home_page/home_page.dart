@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _sectionTitle("Quỹ hỗ trợ"),
               SizedBox(
-                height: 220,
+                height: 300,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 5,
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               _sectionTitle("Trung tâm cứu trợ"),
               SizedBox(
-                height: 220,
+                height: 300,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 5,
@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'assets/images/pet.png',
+              'assets/images/error_image.png',
               height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -434,8 +434,8 @@ class _HomePageState extends State<HomePage> {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: Image.asset(
-              'assets/images/support_fund.png',
-              height: 100,
+              'assets/images/error_image.png',
+              height: 160,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
@@ -444,28 +444,30 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(8.0),
             child: Text(
               "Cocoon x AAF gây quỹ cho trạm cứu trợ chó mèo",
-              style: TextStyle(fontSize: 12, color: Colors.white),
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFFF36439),
-                minimumSize: const Size(double.infinity, 35),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          const SizedBox(height: 10),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFFF36439),
+                  minimumSize: const Size(double.infinity, 35),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
-              ),
-              onPressed: () {},
-              child: const Text(
-                "ỦNG HỘ NGAY",
-                style: TextStyle(
-                    color: Color(0xFFF36439),
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+                onPressed: () {},
+                child: const Text(
+                  "ỦNG HỘ NGAY",
+                  style: TextStyle(
+                      color: Color(0xFFF36439),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
@@ -489,8 +491,8 @@ class _HomePageState extends State<HomePage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'assets/images/pet.png',
-              height: 120,
+              'assets/images/error_image.png',
+              height: 160,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
@@ -499,28 +501,30 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(8.0),
             child: Text(
               "Cocoon x AAF gây quỹ cho trạm cứu trợ chó mèo",
-              style: TextStyle(fontSize: 12, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.black),
             ),
           ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF36439),
-                foregroundColor: Colors.white,
-                minimumSize: const Size(double.infinity, 35),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          const SizedBox(height: 10),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFF36439),
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 35),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
-              ),
-              onPressed: () {},
-              child: const Text(
-                "XEM THÊM",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+                onPressed: () {},
+                child: const Text(
+                  "XEM THÊM",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),

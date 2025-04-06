@@ -121,7 +121,10 @@ dependencies:
 
 
 
+
 dev_dependencies:
+  mockito: ^5.4.5
+  build_runner: ^2.4.6
   flutter_test:
     sdk: flutter
 

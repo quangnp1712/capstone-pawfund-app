@@ -28,7 +28,6 @@ class ChangePassPageBloc
   FutureOr<void> _changePassPageSubmitEvent(ChangePassPageSubmitEvent event,
       Emitter<ChangePassPageState> emit) async {
     emit(ChangePassPageChangeState());
-
     emit(ChangePassPageLoadingState(isLoading: true));
     emit(ChangePassPageChangeState());
 

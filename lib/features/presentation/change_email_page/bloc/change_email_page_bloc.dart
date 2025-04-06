@@ -30,7 +30,6 @@ class ChangeEmailPageBloc
   FutureOr<void> _changeEmailPageSubmitEvent(ChangeEmailPageSubmitEvent event,
       Emitter<ChangeEmailPageState> emit) async {
     emit(ChangeEmailPageChangeState());
-
     emit(ChangeEmailPageLoadingState(isLoading: true));
     emit(ChangeEmailPageChangeState());
 
