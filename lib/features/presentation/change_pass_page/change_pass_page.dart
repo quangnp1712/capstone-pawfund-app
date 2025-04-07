@@ -174,7 +174,7 @@ class _ChangePassPageState extends State<ChangePassPage> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Form(
         key: _formKey,
-        autovalidateMode: AutovalidateMode.always,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

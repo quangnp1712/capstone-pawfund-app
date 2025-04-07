@@ -15,10 +15,22 @@ class ShelterPage extends StatefulWidget {
 
 class _ShelterPageState extends State<ShelterPage> {
   final List<Map<String, String>> rescueCenters = [
-    {"image": "assets/images/image.png", "name": "Animal Adoption Foundation"},
-    {"image": "assets/images/image.png", "name": "PAWFUND ADOPTION CENTER"},
-    {"image": "assets/images/image.png", "name": "Animal Adoption Foundation"},
-    {"image": "assets/images/image.png", "name": "PAWFUND ADOPTION CENTER"},
+    {
+      "image": 'assets/images/error_image.png',
+      "name": "Animal Adoption Foundation"
+    },
+    {
+      "image": 'assets/images/error_image.png',
+      "name": "PAWFUND ADOPTION CENTER"
+    },
+    {
+      "image": "assets/images/error_image.png",
+      "name": "Animal Adoption Foundation"
+    },
+    {
+      "image": "assets/images/error_image.png",
+      "name": "PAWFUND ADOPTION CENTER"
+    },
   ];
   @override
   Widget build(BuildContext context) {
@@ -138,8 +150,8 @@ class _ShelterPageState extends State<ShelterPage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'assets/images/pet.png',
-              height: 120,
+              'assets/images/error_image.png',
+              height: 300,
               width: double.infinity,
               fit: BoxFit.cover,
             ),

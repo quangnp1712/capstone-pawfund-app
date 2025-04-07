@@ -2,6 +2,7 @@ import 'package:capstone_pawfund_app/core/utils/utf8_encoding.dart';
 import 'package:capstone_pawfund_app/features/data/models/account_model.dart';
 import 'package:capstone_pawfund_app/features/presentation/profile_page/bloc/profile_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -53,33 +54,85 @@ class _ProfilePageState extends State<ProfilePage> {
       bloc: profilePageBloc,
       listenWhen: (previous, current) => current is ProfilePageActionState,
       buildWhen: (previous, current) => current is! ProfilePageActionState,
-      listener: (context, state) {},
+      listener: (context, state) {
+        switch (state.runtimeType) {
+          case ShowSnackBarActionState:
+            final snackBarState = state as ShowSnackBarActionState;
+            if (snackBarState.success == true) {
+              ShowSnackBar.SuccessSnackBar(context, snackBarState.message);
+            } else {
+              ShowSnackBar.ErrorSnackBar(context, snackBarState.message);
+            }
+            break;
+        }
+      },
       builder: (context, state) {
         if (state is ProfilePageLoadedState) {
           final currentState = state as ProfilePageLoadedState;
-          firstNameController = TextEditingController(
-              text: Utf8Encoding()
-                  .decode(currentState.accountResponse.firstName.toString()));
-          lastNameController = TextEditingController(
-              text: Utf8Encoding()
-                  .decode(currentState.accountResponse.lastName.toString()));
-          cccdController = TextEditingController(
-              text: Utf8Encoding().decode(
-                  currentState.accountResponse.identification.toString()));
-          phoneController = TextEditingController(
-              text: Utf8Encoding()
-                  .decode(currentState.accountResponse.phone.toString()));
-          addressController = TextEditingController(
-              text: Utf8Encoding()
-                  .decode(currentState.accountResponse.address.toString()));
-          emailController = TextEditingController(
-              text: Utf8Encoding()
-                  .decode(currentState.accountResponse.email.toString()));
-          dobController = TextEditingController(
-              text: Utf8Encoding()
-                  .decode(currentState.accountResponse.dateOfBirth.toString()));
-          genderController = Utf8Encoding()
-              .decode(currentState.accountResponse.genderName.toString());
+          try {
+            firstNameController = TextEditingController(
+                text: Utf8Encoding()
+                    .decode(currentState.accountResponse.firstName.toString()));
+          } catch (e) {
+            firstNameController = TextEditingController(
+                text: currentState.accountResponse.firstName.toString());
+          }
+
+          try {
+            lastNameController = TextEditingController(
+                text: Utf8Encoding()
+                    .decode(currentState.accountResponse.lastName.toString()));
+          } on Exception catch (e) {
+            lastNameController = TextEditingController(
+                text: currentState.accountResponse.lastName.toString());
+          }
+          try {
+            cccdController = TextEditingController(
+                text: Utf8Encoding().decode(
+                    currentState.accountResponse.identification.toString()));
+          } on Exception catch (e) {
+            cccdController = TextEditingController(
+                text: currentState.accountResponse.identification.toString());
+          }
+          try {
+            phoneController = TextEditingController(
+                text: Utf8Encoding()
+                    .decode(currentState.accountResponse.phone.toString()));
+          } on Exception catch (e) {
+            phoneController = TextEditingController(
+                text: currentState.accountResponse.phone.toString());
+          }
+          try {
+            addressController = TextEditingController(
+                text: Utf8Encoding()
+                    .decode(currentState.accountResponse.address.toString()));
+          } on Exception catch (e) {
+            addressController = TextEditingController(
+                text: currentState.accountResponse.address.toString());
+          }
+          try {
+            emailController = TextEditingController(
+                text: Utf8Encoding()
+                    .decode(currentState.accountResponse.email.toString()));
+          } on Exception catch (e) {
+            emailController = TextEditingController(
+                text: currentState.accountResponse.email.toString());
+          }
+          try {
+            dobController = TextEditingController(
+                text: Utf8Encoding().decode(
+                    currentState.accountResponse.dateOfBirth.toString()));
+          } on Exception catch (e) {
+            dobController = TextEditingController(
+                text: currentState.accountResponse.dateOfBirth.toString());
+          }
+          try {
+            genderController = Utf8Encoding()
+                .decode(currentState.accountResponse.genderName.toString());
+          } on Exception catch (e) {
+            genderController =
+                currentState.accountResponse.genderName.toString();
+          }
         }
         return PopScope(
             onPopInvokedWithResult: (didPop, result) {
@@ -189,7 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Form(
         key: _formKey,
-        autovalidateMode: AutovalidateMode.always,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
