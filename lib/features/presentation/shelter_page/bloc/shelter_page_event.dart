@@ -6,3 +6,9 @@ sealed class ShelterPageEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ShelterPageInitialEvent extends ShelterPageEvent {}
+
+class ShelterPageShowShelterDetailEvent extends ShelterPageEvent {}
+
+class ShelterPageShowDonationPageEvent extends ShelterPageEvent {}

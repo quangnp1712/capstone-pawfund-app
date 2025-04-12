@@ -8,6 +8,7 @@ import 'package:capstone_pawfund_app/features/presentation/home_page/bloc/home_p
 import 'package:capstone_pawfund_app/features/presentation/menu_page/bloc/menu_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/pages/splash_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/profile_page/bloc/profile_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/shelter_page/bloc/shelter_page_bloc.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -78,6 +79,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (_) => ProfilePageBloc()),
           BlocProvider(create: (_) => ChangePassPageBloc()),
           BlocProvider(create: (_) => ChangeEmailPageBloc()),
+          BlocProvider(create: (_) => ChangeEmailPageBloc()),
+          BlocProvider(create: (_) => ShelterPageBloc()),
         ],
         child: GetMaterialApp(
           localizationsDelegates: const [

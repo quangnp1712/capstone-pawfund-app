@@ -4,7 +4,7 @@ import 'package:capstone_pawfund_app/features/presentation/funding_page/funding_
 import 'package:capstone_pawfund_app/features/presentation/home_page/home_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/bloc/landing_navigation_bottom_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/menu_page/menu_page.dart';
-import 'package:capstone_pawfund_app/features/presentation/shelter_page/shelter_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/shelter_page/ui/shelter_page.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';

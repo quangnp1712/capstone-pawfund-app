@@ -6,3 +6,9 @@ sealed class FundingPageEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class FundingPageInitialEvent extends FundingPageEvent {}
+
+class FundingPageShowFundingDetailEvent extends FundingPageEvent {}
+
+class FundingPageShowDonationPageEvent extends FundingPageEvent {}

@@ -56,8 +56,10 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              // 1. Header
               _buildHeader(isLogin),
               const SizedBox(height: 20),
+
               _sectionTitle("Loại thú cưng nhận nuôi"),
               SizedBox(
                 height: 100,

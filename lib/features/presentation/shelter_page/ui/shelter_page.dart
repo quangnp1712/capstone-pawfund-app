@@ -1,26 +1,29 @@
-import 'package:capstone_pawfund_app/features/presentation/funding_page/bloc/funding_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/donation_page/donation_page.dart';
+import 'package:capstone_pawfund_app/features/presentation/shelter_page/bloc/shelter_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/shelter_page/ui/shelter_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
-class FundingPage extends StatefulWidget {
+class ShelterPage extends StatefulWidget {
   final Function callback;
-  const FundingPage(
+  const ShelterPage(
     this.callback, {
     super.key,
   });
 
   @override
-  State<FundingPage> createState() => _FundingPageState();
+  State<ShelterPage> createState() => _ShelterPageState();
 
-  static const String FundingPageRoute = "/funding-page";
+  static const String ShelterPageRoute = "/shelter-page";
 }
 
-class _FundingPageState extends State<FundingPage> {
-  FundingPageBloc fundingPageBloc = FundingPageBloc();
+class _ShelterPageState extends State<ShelterPage> {
+  ShelterPageBloc shelterPageBloc = ShelterPageBloc();
 
   @override
   void initState() {
-    fundingPageBloc.add(FundingPageInitialEvent());
+    shelterPageBloc.add(ShelterPageInitialEvent());
     super.initState();
   }
 
@@ -42,15 +45,20 @@ class _FundingPageState extends State<FundingPage> {
       "name": "PAWFUND ADOPTION CENTER"
     },
   ];
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return BlocConsumer<FundingPageBloc, FundingPageState>(
-      bloc: fundingPageBloc,
-      listenWhen: (previous, current) => current is FundingPageActionState,
+    return BlocConsumer<ShelterPageBloc, ShelterPageState>(
+      bloc: shelterPageBloc,
+      listenWhen: (previous, current) => current is ShelterPageActionState,
       listener: (context, state) {
-        switch (state.runtimeType) {}
+        switch (state.runtimeType) {
+          case ShelterPageShowShelterDetailPageState:
+            Get.to(ShelterDetailPage(bloc: shelterPageBloc));
+
+          case ShelterPageShowDonationPageState:
+            Get.to(const DonatePage());
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -194,10 +202,10 @@ class _FundingPageState extends State<FundingPage> {
                 ),
               ),
               onPressed: () {
-                fundingPageBloc.add(FundingPageShowFundingDetailEvent());
+                shelterPageBloc.add(ShelterPageShowShelterDetailEvent());
               },
-              child: Text(
-                "ủng hộ ngay".toUpperCase(),
+              child: const Text(
+                "XEM THÊM",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,
