@@ -25,15 +25,10 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController cccdController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController dobController = TextEditingController();
   TextEditingController verificationCodeController = TextEditingController();
-  DateTime? dobSubmit;
-  List<String> genders = ['NAM', 'NỮ'];
-  String genderController = 'NAM';
 
   @override
   void initState() {
@@ -354,147 +349,147 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 10),
                   // địa chỉ Field
-                  const Text(
-                    "Địa chỉ",
-                    style: TextStyle(
-                        color: Color(0xFFF36439),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  TextFormField(
-                    controller: addressController,
-                    inputFormatters: [
-                      FilteringTextInputFormatter
-                          .singleLineFormatter, // Đảm bảo chỉ nhập trên một dòng
-                    ],
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsetsDirectional.only(start: 0, end: 12),
-                        child: Icon(
-                          Icons.home,
-                          color: Color(0xFFF36439),
-                        ),
-                      ),
-                      hintText: "Nhập địa chỉ",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.grey), // Viền khi chưa focus
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color(0xFFF36439),
-                            width: 2), // Viền khi focus
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
+                  // const Text(
+                  //   "Địa chỉ",
+                  //   style: TextStyle(
+                  //       color: Color(0xFFF36439),
+                  //       fontSize: 15,
+                  //       fontWeight: FontWeight.w600),
+                  // ),
+                  // TextFormField(
+                  //   controller: addressController,
+                  //   inputFormatters: [
+                  //     FilteringTextInputFormatter
+                  //         .singleLineFormatter, // Đảm bảo chỉ nhập trên một dòng
+                  //   ],
+                  //   keyboardType: TextInputType.text,
+                  //   decoration: const InputDecoration(
+                  //     prefixIcon: Padding(
+                  //       padding: EdgeInsetsDirectional.only(start: 0, end: 12),
+                  //       child: Icon(
+                  //         Icons.home,
+                  //         color: Color(0xFFF36439),
+                  //       ),
+                  //     ),
+                  //     hintText: "Nhập địa chỉ",
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //           color: Colors.grey), // Viền khi chưa focus
+                  //     ),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //           color: Color(0xFFF36439),
+                  //           width: 2), // Viền khi focus
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
 
                   // ngày sinh Field
-                  const Text(
-                    "Ngày sinh",
-                    style: TextStyle(
-                        color: Color(0xFFF36439),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  TextFormField(
-                    controller: dobController,
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsetsDirectional.only(start: 0, end: 12),
-                        child: Icon(
-                          Icons.calendar_today,
-                          color: Color(0xFFF36439),
-                        ),
-                      ),
-                      hintText: "Nhập Ngày sinh dd/mm/yyyy",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.grey), // Viền khi chưa focus
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color(0xFFF36439),
-                            width: 2), // Viền khi focus
-                      ),
-                    ),
-                    onTap:
-                        //_selectDate, EVENT
-                        () async {
-                      DateTime now = DateTime.now();
-                      DateTime minSelectableDate = DateTime(now.year - 100);
-                      DateTime maxSelectableDate = DateTime(now.year - 14);
-                      DateTime? dob = await showDatePicker(
-                        context: context,
-                        initialDate: maxSelectableDate,
-                        firstDate: minSelectableDate,
-                        lastDate: maxSelectableDate,
-                      );
-                      if (dob != null) {
-                        dobSubmit = dob;
-                        dobController.text = DateFormat('yyyy-MM-dd')
-                            .format(dob)
-                            .toString()
-                            .split(" ")[0];
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Vui lòng không để trống Ngày sinh của bạn';
-                      }
+                  // const Text(
+                  //   "Ngày sinh",
+                  //   style: TextStyle(
+                  //       color: Color(0xFFF36439),
+                  //       fontSize: 15,
+                  //       fontWeight: FontWeight.w600),
+                  // ),
+                  // TextFormField(
+                  //   controller: dobController,
+                  //   readOnly: true,
+                  //   decoration: const InputDecoration(
+                  //     prefixIcon: Padding(
+                  //       padding: EdgeInsetsDirectional.only(start: 0, end: 12),
+                  //       child: Icon(
+                  //         Icons.calendar_today,
+                  //         color: Color(0xFFF36439),
+                  //       ),
+                  //     ),
+                  //     hintText: "Nhập Ngày sinh dd/mm/yyyy",
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //           color: Colors.grey), // Viền khi chưa focus
+                  //     ),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //           color: Color(0xFFF36439),
+                  //           width: 2), // Viền khi focus
+                  //     ),
+                  //   ),
+                  //   onTap:
+                  //       //_selectDate, EVENT
+                  //       () async {
+                  //     DateTime now = DateTime.now();
+                  //     DateTime minSelectableDate = DateTime(now.year - 100);
+                  //     DateTime maxSelectableDate = DateTime(now.year - 14);
+                  //     DateTime? dob = await showDatePicker(
+                  //       context: context,
+                  //       initialDate: maxSelectableDate,
+                  //       firstDate: minSelectableDate,
+                  //       lastDate: maxSelectableDate,
+                  //     );
+                  //     if (dob != null) {
+                  //       dobSubmit = dob;
+                  //       dobController.text = DateFormat('yyyy-MM-dd')
+                  //           .format(dob)
+                  //           .toString()
+                  //           .split(" ")[0];
+                  //     }
+                  //   },
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Vui lòng không để trống Ngày sinh của bạn';
+                  //     }
 
-                      return null; // Trả về null nếu không có lỗi
-                    },
-                  ),
-                  const SizedBox(height: 10),
+                  //     return null; // Trả về null nếu không có lỗi
+                  //   },
+                  // ),
+                  // const SizedBox(height: 10),
 
                   // gới tính Field
-                  const Text(
-                    "Giới tính",
-                    style: TextStyle(
-                        color: Color(0xFFF36439),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600),
-                  ),
+                  // const Text(
+                  //   "Giới tính",
+                  //   style: TextStyle(
+                  //       color: Color(0xFFF36439),
+                  //       fontSize: 15,
+                  //       fontWeight: FontWeight.w600),
+                  // ),
 
-                  DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    decoration: const InputDecoration(
-                      prefixIcon: Padding(
-                        padding: EdgeInsetsDirectional.only(start: 0, end: 12),
-                        child: Icon(
-                          Icons.person, // Thay icon phù hợp với giới tính
-                          color: Color(0xFFF36439),
-                        ),
-                      ),
-                      hintText: "Chọn giới tính",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.grey), // Viền khi chưa focus
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color(0xFFF36439),
-                            width: 2), // Viền khi focus
-                      ),
-                    ),
-                    value: genderController, // Giá trị đã chọn
-                    items: genders.map((item) {
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item, style: const TextStyle(fontSize: 16)),
-                      );
-                    }).toList(),
-                    onChanged: (item) {
-                      genderController = item!;
-                      // widget.bloc.add(
-                      //     RegisterSelectGenderEvent(gender: genderController));
-                    },
-                  ),
+                  // DropdownButtonFormField<String>(
+                  //   isExpanded: true,
+                  //   decoration: const InputDecoration(
+                  //     prefixIcon: Padding(
+                  //       padding: EdgeInsetsDirectional.only(start: 0, end: 12),
+                  //       child: Icon(
+                  //         Icons.person, // Thay icon phù hợp với giới tính
+                  //         color: Color(0xFFF36439),
+                  //       ),
+                  //     ),
+                  //     hintText: "Chọn giới tính",
+                  //     enabledBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //           color: Colors.grey), // Viền khi chưa focus
+                  //     ),
+                  //     focusedBorder: UnderlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //           color: Color(0xFFF36439),
+                  //           width: 2), // Viền khi focus
+                  //     ),
+                  //   ),
+                  //   value: genderController, // Giá trị đã chọn
+                  //   items: genders.map((item) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: item,
+                  //       child: Text(item, style: const TextStyle(fontSize: 16)),
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (item) {
+                  //     genderController = item!;
+                  //     // widget.bloc.add(
+                  //     //     RegisterSelectGenderEvent(gender: genderController));
+                  //   },
+                  // ),
 
-                  const SizedBox(height: 10),
+                  // const SizedBox(height: 10),
 
                   // email Field
                   const Text(
@@ -645,21 +640,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          String genderCode = "MALE";
-                          if (genderController == "NAM") {
-                            genderCode = "FEMALE";
-                          }
                           AccountModel accountModel = AccountModel(
-                              firstName: firstNameController.text,
-                              lastName: lastNameController.text,
-                              identification: cccdController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
-                              phone: phoneController.text,
-                              address: addressController.text,
-                              dateOfBirth: dobController.text,
-                              genderName: genderController,
-                              genderCode: genderCode);
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                            identification: cccdController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            phone: phoneController.text,
+                          );
 
                           widget.bloc.add(AuthenticationRegisterEvent(
                             accountModel: accountModel,

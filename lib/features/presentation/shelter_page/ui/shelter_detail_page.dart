@@ -1,11 +1,19 @@
-import 'package:capstone_pawfund_app/features/presentation/shelter_page/bloc/shelter_page_bloc.dart';
-import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:capstone_pawfund_app/features/data/models/shelter_model.dart';
+import 'package:capstone_pawfund_app/features/presentation/shelter_page/bloc/shelter_page_bloc.dart';
+import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
+
 class ShelterDetailPage extends StatefulWidget {
   final ShelterPageBloc bloc;
-  const ShelterDetailPage({super.key, required this.bloc});
+  final ShelterModel shelter;
+  const ShelterDetailPage({
+    super.key,
+    required this.bloc,
+    required this.shelter,
+  });
 
   @override
   State<ShelterDetailPage> createState() => _ShelterDetailPageState();
@@ -19,6 +27,28 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
     const Color mainOrangeColor = Color(0xFFF36439);
     final size = MediaQuery.of(context).size;
     const double bannerHeight = 350;
+    final isWideScreen = size.width >= 600;
+
+    final List<Widget> cards = [
+      buildInfoCard(
+        title: 'Năm thành lập',
+        value: widget.shelter.dateOfPub ?? "2000",
+        subtitle: '25 năm hoạt động',
+        isWideScreen: isWideScreen,
+      ),
+      buildInfoCard(
+        title: 'Nhân viên và tình nguyện viên',
+        value: '41',
+        subtitle: '11 nhân viên, 30 tình nguyện viên',
+        isWideScreen: isWideScreen,
+      ),
+      buildInfoCard(
+        title: 'Có thể nhận nuôi',
+        value: '54',
+        subtitle: '24 chó, 30 mèo, ...vv',
+        isWideScreen: isWideScreen,
+      ),
+    ];
 
     return Scaffold(
       body: SafeArea(
@@ -31,7 +61,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                   _buildHeader(size, bannerHeight),
 
                   // 2) Phần nội dung bên dưới
-                  _buildBody(size, bannerHeight, mainOrangeColor),
+                  _buildBody(
+                      size, bannerHeight, mainOrangeColor, isWideScreen, cards),
                 ],
               ),
             ),
@@ -110,7 +141,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
     );
   }
 
-  Widget _buildBody(Size size, double bannerHeight, Color mainOrangeColor) {
+  Widget _buildBody(Size size, double bannerHeight, Color mainOrangeColor,
+      isWideScreen, cards) {
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: size.height - bannerHeight),
       child: Container(
@@ -123,8 +155,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text(
-                  'Animal Adoption Foundation',
+                Text(
+                  widget.shelter.shelterName ?? "",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -135,10 +167,27 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 const SizedBox(height: 10),
                 _LogoShelter(mainOrangeColor),
                 const SizedBox(height: 20),
-                const Text(
-                    "Trung tâm Bảo tồn Động vật Hoang dã tại Việt Nam (Animal Adoption Foundation - AFF) là tổ chức được thành lập trong nước để thực hiện các hoạt động bảo tồn động vật hoang dã và phục hồi hệ sinh thái .",
+                Text(widget.shelter.description ?? "",
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.justify),
+                const SizedBox(height: 30),
+                isWideScreen
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: cards
+                            .map<Widget>((card) => Container(
+                                  margin: const EdgeInsets.only(right: 8),
+                                  child: card,
+                                ))
+                            .toList())
+                    : Column(
+                        children: cards
+                            .map((card) => Container(
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  child: card,
+                                ))
+                            .toList(),
+                      ),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -152,9 +201,26 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                _shelterInfor(mainOrangeColor),
+                _shelterInfor(mainOrangeColor, widget.shelter),
                 const SizedBox(height: 30),
-                _sectionTitle("Nhận nuôi thú cưng", mainOrangeColor),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Khung giờ mở cửa",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: mainOrangeColor)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                _shelterOpen(mainOrangeColor, widget.shelter),
+                const SizedBox(height: 30),
+                _sectionTitle(
+                  "Nhận nuôi thú cưng",
+                  mainOrangeColor,
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   height: 280,
@@ -300,7 +366,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
     );
   }
 
-  Widget _shelterInfor(Color mainOrangeColor) {
+  Widget _shelterInfor(Color mainOrangeColor, ShelterModel shelter) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -328,7 +394,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
                 Flexible(
                   child: Text(
-                    "Animal Adoption Foundation",
+                    shelter.shelterName ?? "",
                     style: TextStyle(
                         color: mainOrangeColor,
                         fontSize: 18,
@@ -352,7 +418,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
@@ -364,7 +430,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
                 Flexible(
                   child: Text(
-                    "18/02/2025",
+                    shelter.dateOfPub ?? "",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -385,7 +451,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
@@ -397,7 +463,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
                 Flexible(
                   child: Text(
-                    "aff.adoption@gmail.com",
+                    shelter.email ?? "",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -418,7 +484,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
@@ -430,7 +496,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
                 Flexible(
                   child: Text(
-                    "0900100100",
+                    shelter.hotline ?? "",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -451,7 +517,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
               ),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
@@ -463,7 +529,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
                 Flexible(
                   child: Text(
-                    "1 Quang Trung, p.1, Q.Gò Vấp ",
+                    shelter.address ?? "",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -471,6 +537,82 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _shelterOpen(Color mainOrangeColor, ShelterModel shelter) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          // Thứ 2 - Thứ 6
+          Container(
+            padding: const EdgeInsets.only(bottom: 4),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xFFECEFF2),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    "Thứ 2 - Thứ 6:",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    "9:00 sáng - 7:00 tối",
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w900),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          // Thứ 7 - Chủ Nhật:
+          Container(
+            padding: const EdgeInsets.only(bottom: 4),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xFFECEFF2),
+                  width: 1.5,
+                ),
+              ),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    "Thứ 7 - Chủ Nhật: :",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    "9:00 sáng - 4:00 chiều",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
         ],
       ),
     );
@@ -667,7 +809,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
             ),
             child: Text(
               "ủng hộ".toUpperCase(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -676,6 +818,80 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildInfoCard({
+    required String title,
+    required String value,
+    required String subtitle,
+    required bool isWideScreen,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          const BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: isWideScreen
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.deepOrange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.grey),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.deepOrange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
     );
   }
 }

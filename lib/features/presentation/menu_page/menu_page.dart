@@ -110,6 +110,8 @@ class _MenuPageState extends State<MenuPage> {
                                               "Lịch sử quyên góp", ""),
                                           _buildMenuItem(Icons.favorite,
                                               "Thú cưng yêu thích", ""),
+                                          _buildMenuItem(Icons.article,
+                                              "Lịch sử hoạt động", ""),
                                         ]),
                                       ],
                                     )

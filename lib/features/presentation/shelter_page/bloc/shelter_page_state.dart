@@ -26,6 +26,16 @@ class ShelterPageLoadingState extends ShelterPageActionState {
 
 class ShelterPageChangeState extends ShelterPageActionState {}
 
-class ShelterPageShowShelterDetailPageState extends ShelterPageActionState {}
+class ShelterPageShowShelterDetailPageState extends ShelterPageActionState {
+  final ShelterModel shelterDetail;
+
+  ShelterPageShowShelterDetailPageState({required this.shelterDetail});
+}
 
 class ShelterPageShowDonationPageState extends ShelterPageActionState {}
+
+class ShelterPageLoadedState extends ShelterPageState {
+  final List<ShelterModel> shelterModel;
+
+  ShelterPageLoadedState({required this.shelterModel});
+}

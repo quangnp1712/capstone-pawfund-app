@@ -1,3 +1,4 @@
+import 'package:capstone_pawfund_app/features/data/models/shelter_model.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/bloc/authentication_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/authentication_page.dart';
 import 'package:capstone_pawfund_app/features/presentation/authentication/ui/login_page.dart';
@@ -95,7 +96,8 @@ class RouteGenerator {
         page: () {
           final shelterPageBloc =
               BlocProvider.of<ShelterPageBloc>(Get.context!);
-          return ShelterDetailPage(bloc: shelterPageBloc);
+          final ShelterModel shelter = ShelterModel();
+          return ShelterDetailPage(bloc: shelterPageBloc, shelter: shelter);
         },
       ),
     ];

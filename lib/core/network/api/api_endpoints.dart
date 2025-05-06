@@ -12,8 +12,7 @@ class ApiEndpoints {
 
   //! Account API !//
   // register
-  final String AccountAdopterDonorUrl =
-      "$domainUrl/v2/public/account/adopter-donor";
+  final String AccountAdopterDonorUrl = "$domainUrl/v2/public/account";
 
   final String AccountVerificationCodeUrl =
       "$domainUrl/v1/public/account/verify";
@@ -33,4 +32,11 @@ class ApiEndpoints {
 
   // Logout
   final String SessionLogoutUrl = "$domainUrl/v1/api/session/logout";
+
+  //! Shelter API !//
+  // Shelter List
+  final String ShelterListUrl = "$domainUrl/v2/public/shelter";
+
+  // Shelter Detail
+  final String ShelterDetailUrl = "$domainUrl/v1/public/shelter";
 }

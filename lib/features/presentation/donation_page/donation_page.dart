@@ -199,6 +199,22 @@ class _DonatePageState extends State<DonatePage> {
               const SizedBox(height: 8),
               _shelterInfor(mainOrangeColor),
               const SizedBox(height: 30),
+              _DonateAmount(mainOrangeColor),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Sao kê nhận tiền ủng hộ",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: mainOrangeColor)),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _SupportStatementTable(mainOrangeColor),
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -685,42 +701,38 @@ class _DonatePageState extends State<DonatePage> {
   }
 
   Widget _SupportStatementTable(Color mainOrangeColor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Sao kê nhận tiền ủng hộ",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: mainOrangeColor,
-          ),
-        ),
-        const SizedBox(height: 12),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columnSpacing: 20,
-            columns: const [
-              DataColumn(label: Text("Người chuyển")),
-              DataColumn(label: Text("Thời gian")),
-              DataColumn(label: Text("Số tiền")),
-              DataColumn(label: Text("Nội dung")),
-            ],
-            rows: data.map((row) {
-              return DataRow(cells: [
-                DataCell(Text(row["sender"]!)),
-                DataCell(Text(row["time"]!)),
-                DataCell(Text(
-                  row["amount"]!,
-                  style: TextStyle(color: mainOrangeColor),
-                )),
-                DataCell(Text(row["content"]!)),
-              ]);
-            }).toList(),
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: DataTable(
+                columnSpacing: 20,
+                columns: const [
+                  DataColumn(label: Text("Người chuyển")),
+                  DataColumn(label: Text("Thời gian")),
+                  DataColumn(label: Text("Số tiền")),
+                  DataColumn(label: Text("Nội dung")),
+                ],
+                rows: data.map((row) {
+                  return DataRow(cells: [
+                    DataCell(Text(row["sender"]!)),
+                    DataCell(Text(row["time"]!)),
+                    DataCell(Text(
+                      row["amount"]!,
+                      style: TextStyle(color: mainOrangeColor),
+                    )),
+                    DataCell(Text(row["content"]!)),
+                  ]);
+                }).toList(),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

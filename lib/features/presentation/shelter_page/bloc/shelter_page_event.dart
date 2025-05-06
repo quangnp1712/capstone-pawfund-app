@@ -9,6 +9,12 @@ sealed class ShelterPageEvent extends Equatable {
 
 class ShelterPageInitialEvent extends ShelterPageEvent {}
 
-class ShelterPageShowShelterDetailEvent extends ShelterPageEvent {}
+class ShelterPageShowShelterDetailEvent extends ShelterPageEvent {
+  final int shelterId;
+
+  ShelterPageShowShelterDetailEvent({required this.shelterId});
+}
 
 class ShelterPageShowDonationPageEvent extends ShelterPageEvent {}
+
+class ShelterPageLoadedEvent extends ShelterPageEvent {}
