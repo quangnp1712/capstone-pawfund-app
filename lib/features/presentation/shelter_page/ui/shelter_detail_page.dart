@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:capstone_pawfund_app/features/data/models/shelter_model.dart';
 import 'package:capstone_pawfund_app/features/presentation/shelter_page/bloc/shelter_page_bloc.dart';
 import 'package:capstone_pawfund_app/features/presentation/widgets/landing_navigation_bottom/landing_navigation_bottom.dart';
+import 'package:intl/intl.dart';
 
 class ShelterDetailPage extends StatefulWidget {
   final ShelterPageBloc bloc;
@@ -28,12 +29,18 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
     final size = MediaQuery.of(context).size;
     const double bannerHeight = 350;
     final isWideScreen = size.width >= 600;
+    final String yearsOfOperation = (DateTime.now().year -
+            DateTime.parse(widget.shelter.dateOfPub.toString()).year)
+        .toString();
+    final String _dateOfPub = DateFormat('dd-MM-yyyy')
+        .format(DateTime.parse(widget.shelter.dateOfPub.toString()))
+        .toString();
 
     final List<Widget> cards = [
       buildInfoCard(
         title: 'Năm thành lập',
-        value: widget.shelter.dateOfPub ?? "2000",
-        subtitle: '25 năm hoạt động',
+        value: "${DateTime.parse(widget.shelter.dateOfPub.toString()).year}",
+        subtitle: '$yearsOfOperation năm hoạt động',
         isWideScreen: isWideScreen,
       ),
       buildInfoCard(
@@ -61,8 +68,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                   _buildHeader(size, bannerHeight),
 
                   // 2) Phần nội dung bên dưới
-                  _buildBody(
-                      size, bannerHeight, mainOrangeColor, isWideScreen, cards),
+                  _buildBody(size, bannerHeight, mainOrangeColor, isWideScreen,
+                      cards, _dateOfPub),
                 ],
               ),
             ),
@@ -142,7 +149,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
   }
 
   Widget _buildBody(Size size, double bannerHeight, Color mainOrangeColor,
-      isWideScreen, cards) {
+      isWideScreen, cards, String _dateOfPub) {
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: size.height - bannerHeight),
       child: Container(
@@ -158,7 +165,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 Text(
                   widget.shelter.shelterName ?? "",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.orange,
@@ -168,7 +175,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 _LogoShelter(mainOrangeColor),
                 const SizedBox(height: 20),
                 Text(widget.shelter.description ?? "",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                        fontSize: 17, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.justify),
                 const SizedBox(height: 30),
                 isWideScreen
@@ -201,7 +209,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                _shelterInfor(mainOrangeColor, widget.shelter),
+                _shelterInfor(mainOrangeColor, widget.shelter, _dateOfPub),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -366,7 +374,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
     );
   }
 
-  Widget _shelterInfor(Color mainOrangeColor, ShelterModel shelter) {
+  Widget _shelterInfor(
+      Color mainOrangeColor, ShelterModel shelter, String _dateOfPub) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -421,7 +430,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
+                const Flexible(
                   child: Text(
                     "Ngày thành lập:",
                     style: TextStyle(color: Colors.black, fontSize: 16),
@@ -430,8 +439,9 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 ),
                 Flexible(
                   child: Text(
-                    shelter.dateOfPub ?? "",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    _dateOfPub,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -454,7 +464,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
+                const Flexible(
                   child: Text(
                     "Email:",
                     style: TextStyle(color: Colors.black, fontSize: 16),
@@ -464,7 +474,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 Flexible(
                   child: Text(
                     shelter.email ?? "",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -487,7 +498,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
+                const Flexible(
                   child: Text(
                     "Hotline:",
                     style: TextStyle(color: Colors.black, fontSize: 16),
@@ -497,7 +508,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 Flexible(
                   child: Text(
                     shelter.hotline ?? "",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -520,7 +532,7 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
+                const Flexible(
                   child: Text(
                     "Địa chỉ:",
                     style: TextStyle(color: Colors.black, fontSize: 16),
@@ -530,7 +542,8 @@ class _ShelterDetailPageState extends State<ShelterDetailPage> {
                 Flexible(
                   child: Text(
                     shelter.address ?? "",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
