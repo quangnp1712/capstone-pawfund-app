@@ -64,7 +64,8 @@ e. Communication:
    
 ![HOMEPAGE](https://github.com/user-attachments/assets/3d1671fb-0d23-4245-b146-6e81d9e016f3)
 
-7. Detail page
+4. Detail page
+   
 ![CHI TIẾT](https://github.com/user-attachments/assets/06d16805-9dba-40fe-a825-e9d171b3fad9)
 
 
