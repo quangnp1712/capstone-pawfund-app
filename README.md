@@ -53,15 +53,18 @@ e. Communication:
 ## Layout
 
 1. Home page
+   
 ![HOMEPAGE](https://github.com/user-attachments/assets/1f3de187-04fe-474e-a6a1-cab20613efdf)
 
 2. Login page
+   
 ![ĐĂNG NHẬP](https://github.com/user-attachments/assets/4fa18327-e337-4264-ab1a-e9387d1aa25b)
 
 3. Pet Intake page
+   
 ![HOMEPAGE](https://github.com/user-attachments/assets/3d1671fb-0d23-4245-b146-6e81d9e016f3)
 
-4. Detail page
+7. Detail page
 ![CHI TIẾT](https://github.com/user-attachments/assets/06d16805-9dba-40fe-a825-e9d171b3fad9)
 
 
